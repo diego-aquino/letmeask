@@ -1,38 +1,53 @@
+import Head from 'next/head';
+import { useRouter } from 'next/router';
 import { FC } from 'react';
 
-import { Illustration } from '~/assets/icons';
 import { Button, Input } from '~/components/common';
-import { Container, MainContent, Separator } from '~/styles/pages/HomePage';
+import { useAuth } from '~/contexts/AuthContext';
+import { Container, Separator } from '~/styles/pages/HomePage';
 
 const googleIcon = <img src="/google-icon.svg" alt="Google logo" />;
 
-const HomePage: FC = () => (
-  <Container>
-    <aside>
-      <Illustration role="img" />
-      <h1>Create live Q&amp;A rooms!</h1>
-      <p>Answer your audience&apos;s questions in real time.</p>
-    </aside>
+const HomePage: FC = () => {
+  const router = useRouter();
+  const { user, signInWithGoogle } = useAuth();
 
-    <main>
-      <MainContent>
-        <img src="/logo.svg" alt="Letmeask" />
+  const handleCreateRoom = async () => {
+    if (!user) {
+      await signInWithGoogle();
+    }
+    router.push('/rooms/new');
+  };
 
-        <Button type="button" variant="outline" icon={googleIcon}>
-          Create a room with Google
-        </Button>
+  return (
+    <Container>
+      <Head>
+        <title>Letmeask</title>
+      </Head>
 
-        <Separator>
-          <span>or join a room</span>
-        </Separator>
+      <Button
+        type="button"
+        variant="outline"
+        icon={googleIcon}
+        onClick={handleCreateRoom}
+      >
+        Create a room with Google
+      </Button>
 
-        <form>
-          <Input type="text" placeholder="Enter the code of the room" />
-          <Button type="submit">Join room</Button>
-        </form>
-      </MainContent>
-    </main>
-  </Container>
-);
+      <Separator>
+        <span>or join a room</span>
+      </Separator>
+
+      <form>
+        <Input
+          type="text"
+          id="roomCodeInput"
+          label="Enter the code of the room"
+        />
+        <Button type="submit">Join room</Button>
+      </form>
+    </Container>
+  );
+};
 
 export default HomePage;
