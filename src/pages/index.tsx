@@ -16,8 +16,7 @@ const HomePage: FC = () => (
 
     <main>
       <MainContent>
-        {/* <Logo role="img" aria-label="Letmeask" /> */}
-        <img src="/logo.svg" alt="" />
+        <img src="/logo.svg" alt="Letmeask" />
 
         <Button type="button" variant="outline" icon={googleIcon}>
           Create a room with Google
