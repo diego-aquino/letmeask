@@ -3,7 +3,7 @@ import { createGlobalStyle, css } from 'styled-components';
 const GlobalStyle = createGlobalStyle`
   ${({ theme }) => css`
     :root {
-      font-size: 56.5%;
+      font-size: 56.25%;
     }
 
     * {

@@ -4,8 +4,9 @@ export type ButtonVariant = 'primary' | 'outline';
 
 export const Container = styled.button<{ variant: ButtonVariant }>`
   ${({ variant, theme }) => css`
-    height: 5rem;
+    height: 4.8rem;
     border-radius: 0.8rem;
+    padding: 0 3.2rem;
 
     display: flex;
     justify-content: center;
