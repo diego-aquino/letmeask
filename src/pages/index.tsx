@@ -1,9 +1,10 @@
 import Head from 'next/head';
 import { useRouter } from 'next/router';
-import { FC } from 'react';
+import { FC, FormEvent, useRef, useState } from 'react';
 
 import { Button, Input } from '~/components/common';
 import { useAuth } from '~/contexts/AuthContext';
+import { getRoomById } from '~/services/rooms';
 import { Container, Separator } from '~/styles/pages/HomePage';
 
 const googleIcon = <img src="/google-icon.svg" alt="Google logo" />;
@@ -12,11 +13,36 @@ const HomePage: FC = () => {
   const router = useRouter();
   const { user, signInWithGoogle } = useAuth();
 
+  const roomCodeRef = useRef<HTMLInputElement>(null);
+  const [submitButtonIsDisabled, setSubmitButtonIsDisabled] = useState(false);
+
   const handleCreateRoom = async () => {
     if (!user) {
       await signInWithGoogle();
     }
     router.push('/rooms/new');
+  };
+
+  const handleJoinRoom = async (event: FormEvent) => {
+    event.preventDefault();
+    setSubmitButtonIsDisabled(true);
+
+    try {
+      const roomCode = roomCodeRef.current?.value.trim();
+      if (!roomCode || !user) return;
+
+      const roomDoc = await getRoomById(roomCode);
+      const roomExists = (await roomDoc.get()).exists;
+
+      if (!roomExists) {
+        alert('Room not found.'); // eslint-disable-line no-alert
+        return;
+      }
+
+      router.push(`/rooms/${roomCode}`);
+    } finally {
+      setSubmitButtonIsDisabled(false);
+    }
   };
 
   return (
@@ -38,13 +64,17 @@ const HomePage: FC = () => {
         <span>or join a room</span>
       </Separator>
 
-      <form>
+      <form onSubmit={handleJoinRoom}>
         <Input
+          ref={roomCodeRef}
           type="text"
           id="roomCodeInput"
           label="Enter the code of the room"
+          autoComplete="off"
         />
-        <Button type="submit">Join room</Button>
+        <Button type="submit" disabled={submitButtonIsDisabled}>
+          Join room
+        </Button>
       </form>
     </Container>
   );

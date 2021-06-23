@@ -1,21 +1,40 @@
 import Head from 'next/head';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
-import { FC, useEffect } from 'react';
+import { FC, FormEvent, useEffect, useRef, useState } from 'react';
 
 import { Button, Input } from '~/components/common';
 import { useAuth } from '~/contexts/AuthContext';
+import { createRoom } from '~/services/rooms';
 import { Container } from '~/styles/pages/NewRoomPage';
 
 const NewRoomPage: FC = () => {
   const router = useRouter();
   const { user, isLoading } = useAuth();
 
+  const roomNameRef = useRef<HTMLInputElement>(null);
+  const [submitButtonIsDisabled, setSubmitButtonIsDisabled] = useState(false);
+
   useEffect(() => {
     if (!user && !isLoading) {
       router.replace('/');
     }
   }, [user, isLoading, router]);
+
+  const handleCreateRoomSubmit = async (event: FormEvent) => {
+    event.preventDefault();
+    setSubmitButtonIsDisabled(true);
+
+    try {
+      const roomName = roomNameRef.current?.value.trim();
+      if (!roomName || !user) return;
+
+      const roomDoc = await createRoom({ name: roomName, ownerId: user.id });
+      router.push(`/rooms/${roomDoc.id}`);
+    } finally {
+      setSubmitButtonIsDisabled(false);
+    }
+  };
 
   if (!user && isLoading) {
     return null;
@@ -28,9 +47,17 @@ const NewRoomPage: FC = () => {
       </Head>
 
       <h2>Create a new room</h2>
-      <form>
-        <Input type="text" id="roomName" label="Room name" />
-        <Button type="submit">Create room</Button>
+      <form onSubmit={handleCreateRoomSubmit}>
+        <Input
+          ref={roomNameRef}
+          type="text"
+          id="roomName"
+          label="Room name"
+          autoComplete="off"
+        />
+        <Button type="submit" disabled={submitButtonIsDisabled}>
+          Create room
+        </Button>
       </form>
       <p>
         Want to join an existing room?&nbsp;
