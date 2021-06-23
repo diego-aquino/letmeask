@@ -2,12 +2,16 @@ import firebase from 'firebase/app';
 
 import { database } from './firebase';
 
-interface Room {
+export interface Room {
   name: string;
   ownerId: string;
 }
 
-type RoomReference = firebase.firestore.DocumentReference<Room>;
+export type RoomReference = firebase.firestore.DocumentReference<Room>;
+
+export function getRoomDoc(roomId: string): RoomReference {
+  return database.collection('rooms').doc(roomId) as RoomReference;
+}
 
 export async function createRoom(room: Room): Promise<RoomReference> {
   const { name, ownerId } = room;
