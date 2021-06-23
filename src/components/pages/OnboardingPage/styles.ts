@@ -57,7 +57,7 @@ export const MainContent = styled.div`
 
   text-align: center;
 
-  > img {
+  > svg {
     margin-bottom: 4.8rem;
     align-self: center;
   }

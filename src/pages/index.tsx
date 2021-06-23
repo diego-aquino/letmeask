@@ -2,12 +2,11 @@ import Head from 'next/head';
 import { useRouter } from 'next/router';
 import { FC, FormEvent, useRef, useState } from 'react';
 
+import { GoogleIcon } from '~/assets/icons';
 import { Button, Input } from '~/components/common';
 import { useAuth } from '~/contexts/AuthContext';
 import { getRoomById } from '~/services/rooms';
 import { Container, Separator } from '~/styles/pages/HomePage';
-
-const googleIcon = <img src="/google-icon.svg" alt="Google logo" />;
 
 const HomePage: FC = () => {
   const router = useRouter();
@@ -54,7 +53,7 @@ const HomePage: FC = () => {
       <Button
         type="button"
         variant="outline"
-        icon={googleIcon}
+        icon={<GoogleIcon role="img" aria-label="Google logo" />}
         onClick={handleCreateRoom}
       >
         Create a room with Google
