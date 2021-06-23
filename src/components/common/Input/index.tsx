@@ -1,11 +1,23 @@
-import { InputHTMLAttributes, FC, useRef, FocusEvent, useState } from 'react';
+import {
+  InputHTMLAttributes,
+  useRef,
+  FocusEvent,
+  useState,
+  ForwardRefRenderFunction,
+  forwardRef,
+} from 'react';
+
+import { mergeRefs } from '~/utils';
 
 import { Container } from './styles';
 
 type Props = InputHTMLAttributes<HTMLInputElement> &
   ({ id: string; label: string } | { id?: string; label?: never });
 
-const Input: FC<Props> = ({ id, label, placeholder, onBlur, ...rest }) => {
+const Input: ForwardRefRenderFunction<HTMLInputElement, Props> = (
+  { id, label, placeholder, onBlur, ...rest },
+  ref,
+) => {
   const inputRef = useRef<HTMLInputElement>(null);
   const [keepLabelOutside, setKeepLabelOutside] = useState(false);
 
@@ -18,7 +30,7 @@ const Input: FC<Props> = ({ id, label, placeholder, onBlur, ...rest }) => {
     <Container keepLabelOutside={keepLabelOutside}>
       {label && <label htmlFor={id}>{label}</label>}
       <input
-        ref={inputRef}
+        ref={mergeRefs(inputRef, ref)}
         id={id}
         onBlur={handleBlur}
         placeholder={placeholder ?? label}
@@ -28,4 +40,4 @@ const Input: FC<Props> = ({ id, label, placeholder, onBlur, ...rest }) => {
   );
 };
 
-export default Input;
+export default forwardRef(Input);
