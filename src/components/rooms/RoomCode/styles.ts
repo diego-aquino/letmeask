@@ -13,6 +13,11 @@ export const CopyIconWrapper = styled.div`
 
     background-color: ${theme.colors.purple};
     transition: background-color 0.15s;
+
+    svg {
+      width: 2rem;
+      height: 2rem;
+    }
   `}
 `;
 
