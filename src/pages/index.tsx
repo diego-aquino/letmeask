@@ -52,7 +52,7 @@ const HomePage: FC = () => {
 
       <Button
         type="button"
-        variant="outline"
+        variant="outline-gray"
         icon={<GoogleIcon role="img" aria-label="Google logo" />}
         onClick={handleCreateRoom}
       >

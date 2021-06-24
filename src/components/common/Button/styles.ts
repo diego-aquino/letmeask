@@ -1,12 +1,10 @@
 import styled, { css } from 'styled-components';
 
-export type ButtonVariant = 'primary' | 'outline';
+export type ButtonVariant = 'primary' | 'outline' | 'outline-gray';
 
 export const Container = styled.button<{ variant: ButtonVariant }>`
   ${({ variant, theme }) => css`
-    height: 4.8rem;
     border-radius: 0.8rem;
-    padding: 0 3.2rem;
 
     display: flex;
     justify-content: center;
@@ -23,7 +21,12 @@ export const Container = styled.button<{ variant: ButtonVariant }>`
 
     ${variant === 'primary' &&
     css`
+      height: 4.8rem;
+      padding: 0 3.2rem;
+
       border: none;
+
+      font-size: 1.6rem;
       color: ${theme.colors.white.details};
 
       background-color: ${theme.colors.purple};
@@ -36,7 +39,31 @@ export const Container = styled.button<{ variant: ButtonVariant }>`
 
     ${variant === 'outline' &&
     css`
+      height: 4rem;
+      padding: 0 2.4rem;
+
+      border: 1px solid ${theme.colors.purple};
+
+      font-size: 1.4rem;
+      color: ${theme.colors.purple};
+
+      background-color: transparent;
+      transition: border-color 0.15s, color 0.15s, box-shadow 0.15s;
+
+      :hover:not(:disabled) {
+        border-color: ${theme.colors.hover.purple};
+        color: ${theme.colors.hover.purple};
+        box-shadow: 0px 0px 0px 1px ${theme.colors.purple};
+      }
+    `}
+
+    ${variant === 'outline-gray' &&
+    css`
+      height: 4.8rem;
+      padding: 0 3.2rem;
       border: 1px solid ${theme.colors.gray.medium};
+
+      font-size: 1.6rem;
       color: ${theme.colors.black};
 
       background-color: transparent;
