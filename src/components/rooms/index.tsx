@@ -1,3 +1,4 @@
+import Question from './Question';
 import RoomCode from './RoomCode';
 
-export { RoomCode };
+export { RoomCode, Question };
