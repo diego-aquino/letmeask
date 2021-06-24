@@ -31,33 +31,57 @@ export const QuestionControls = styled.div`
   align-items: center;
 
   > * + * {
-    margin-left: 0.8rem;
+    margin-left: 1.4rem;
+  }
+`;
+
+const questionControlStyles = css`
+  ${({ theme }) => css`
+    display: flex;
+    align-items: center;
+
+    color: ${theme.colors.gray.dark};
+    background-color: transparent;
+
+    svg {
+      width: 2.4rem;
+      height: 2.4rem;
+    }
+  `}
+`;
+
+export const Likes = styled.div`
+  ${questionControlStyles}
+
+  align-items: flex-end;
+  cursor: default;
+
+  svg {
+    margin-right: 0.4rem;
   }
 `;
 
 export const ControlButton = styled.button`
   ${({ theme }) => css`
+    ${questionControlStyles}
+
     border: none;
     cursor: pointer;
 
-    display: flex;
-    align-items: center;
-
-    color: ${theme.colors.gray.dark};
-
-    background-color: transparent;
+    ${Likes} {
+      cursor: inherit;
+    }
 
     :hover {
       color: ${theme.colors.hover.purple};
 
+      ${Likes} {
+        color: inherit;
+      }
+
       svg path {
         stroke: ${theme.colors.hover.purple};
       }
-    }
-
-    svg {
-      width: 2.4rem;
-      height: 2.4rem;
     }
   `}
 `;
@@ -71,28 +95,5 @@ export const DeleteButton = styled(ControlButton)`
         stroke: ${theme.colors.hover.danger};
       }
     }
-  `}
-`;
-
-interface LikeControlProps {
-  hasLike?: boolean;
-}
-
-export const LikeButton = styled(ControlButton)<LikeControlProps>`
-  ${({ theme, hasLike }) => css`
-    align-items: flex-end;
-
-    svg {
-      margin-right: 0.6rem;
-    }
-
-    ${hasLike &&
-    css`
-      color: ${theme.colors.purple};
-
-      svg path {
-        stroke: ${theme.colors.purple};
-      }
-    `}
   `}
 `;

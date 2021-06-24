@@ -65,11 +65,8 @@ const AdminRoomPage: FC = () => {
         {questions.map((question) => (
           <Question
             key={question.id}
-            id={question.id}
-            content={question.content}
-            authorName={question.author.name ?? ''}
-            authorPhotoURL={question.author.photoURL}
             adminView
+            question={question}
             onRemoveQuestion={handleRemoveQuestion}
           />
         ))}

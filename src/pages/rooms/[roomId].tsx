@@ -112,13 +112,9 @@ const GuestRoomPage: FC = () => {
         {questions.map((question) => (
           <Question
             key={question.id}
-            id={question.id}
-            content={question.content}
-            authorName={question.author.name ?? ''}
-            authorPhotoURL={question.author.photoURL}
             adminView={false}
-            numberOfLikes={question.numberOfLikes}
-            defaultHasLike={question.hasLike}
+            question={question}
+            initialHasLike={question.hasLike}
             onToggleQuestionLike={handleToggleQuestionLike}
           />
         ))}
