@@ -30,7 +30,8 @@ const theme = {
       purple: 'linear-gradient(139.44deg, #485BFF 0%, #FF59F8 96.19%)',
     },
     shadows: {
-      default: '0px 2px 12px rgba(0, 0, 0, 0.04)',
+      default: '0 0.4rem 1.4rem rgba(0, 0, 0, 0.06)',
+      light: '0 0.3rem 1.4rem rgba(0, 0, 0, 0.04)',
     },
   },
 } as const;

@@ -10,9 +10,9 @@ import {
 
 import { auth } from '~/services/firebase';
 
-interface User {
+export interface User {
   id: string;
-  displayName: string | null;
+  name: string | null;
   photoURL: string | null;
 }
 
@@ -40,7 +40,11 @@ const AuthContextProvider: FC = ({ children }) => {
 
     const { uid, displayName, photoURL } = result.user;
 
-    const signedInUser: User = { id: uid, displayName, photoURL };
+    const signedInUser: User = {
+      id: uid,
+      name: displayName,
+      photoURL,
+    };
     setUser(signedInUser);
     setIsLoading(false);
 
@@ -55,7 +59,11 @@ const AuthContextProvider: FC = ({ children }) => {
       }
 
       const { uid, displayName, photoURL } = currentUser;
-      setUser({ id: uid, displayName, photoURL });
+      setUser({
+        id: uid,
+        name: displayName,
+        photoURL,
+      });
       setIsLoading(false);
     });
 

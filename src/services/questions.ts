@@ -6,8 +6,8 @@ export interface Question {
   content: string;
   author: {
     id: string;
-    name?: string | null;
-    avatar?: string | null;
+    name: string | null;
+    photoURL: string | null;
   };
   isHighlighted: boolean;
   isAnswered: boolean;
@@ -20,7 +20,7 @@ export async function createQuestion(
   roomId: string,
 ): Promise<QuestionReference> {
   const { content, author, isHighlighted, isAnswered } = question;
-  const { id, name, avatar } = author;
+  const { id, name, photoURL } = author;
 
   const questionDoc = await database
     .collection('rooms')
@@ -28,7 +28,7 @@ export async function createQuestion(
     .collection('questions')
     .add({
       content,
-      author: { id, name, avatar },
+      author: { id, name, photoURL },
       isHighlighted,
       isAnswered,
     });

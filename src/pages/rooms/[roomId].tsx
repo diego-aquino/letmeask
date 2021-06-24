@@ -1,35 +1,33 @@
 import { useRouter } from 'next/router';
 import { ParsedUrlQuery } from 'querystring';
-import { FC, FormEvent, useMemo, useRef, useState } from 'react';
+import { FC, FormEvent, useRef, useState } from 'react';
 
-import { Logo } from '~/assets/icons';
-import { Button } from '~/components/common';
-import { RoomCode } from '~/components/rooms';
+import { Button, UserInfo } from '~/components/common';
+import { RoomPageLayout } from '~/components/layouts';
+import { Question } from '~/components/questions';
 import { useAuth } from '~/contexts/AuthContext';
-import { useQuestions, useRoom } from '~/hooks';
+import { useRoom, useQuestions } from '~/hooks';
 import { createQuestion } from '~/services/questions';
 import {
-  Container,
+  NewQuestionForm,
   FormFooter,
-  RoomHead,
-  UserInfo,
-} from '~/styles/pages/RoomPage';
+  QuestionList,
+} from '~/styles/pages/GuestRoomPage';
 
 interface PageQuery extends ParsedUrlQuery {
   roomId: string;
 }
 
-const RoomPage: FC = () => {
+const GuestRoomPage: FC = () => {
   const { query } = useRouter();
   const { roomId } = query as PageQuery;
 
   const { user } = useAuth();
+  const { room } = useRoom(roomId);
+  const { questions } = useQuestions(roomId);
 
   const questionContentRef = useRef<HTMLTextAreaElement>(null);
   const [isSendingQuestion, setIsSendingQuestion] = useState(false);
-
-  const { room } = useRoom(roomId);
-  const { questions } = useQuestions(roomId);
 
   const handleSendQuestion = async (event: FormEvent) => {
     event.preventDefault();
@@ -41,72 +39,64 @@ const RoomPage: FC = () => {
 
     if (!user) return;
 
+    if (questionContentRef.current) {
+      questionContentRef.current.value = '';
+    }
+
     const question = {
       content: questionContent,
       author: {
         id: user.id,
-        name: user.displayName,
-        avatar: user.photoURL,
+        name: user.name,
+        photoURL: user.photoURL,
       },
       isHighlighted: false,
       isAnswered: false,
     };
 
-    if (questionContentRef.current) {
-      questionContentRef.current.value = '';
-    }
-
     await createQuestion(question, roomId);
     setIsSendingQuestion(false);
   };
 
-  const questionsLeftLabel = useMemo(() => {
-    if (questions.length === 0) return null;
-    const shouldUsePlural = questions.length > 1;
-    return `${questions.length} question${shouldUsePlural ? 's' : ''}`;
-  }, [questions.length]);
-
   return (
-    <Container>
-      <header>
-        <Logo role="img" aria-label="Letmeask" />
-        <RoomCode code={roomId} />
-      </header>
+    <RoomPageLayout
+      roomName={room?.name ?? ''}
+      roomCode={roomId}
+      numberOfQuestions={questions.length}
+    >
+      <NewQuestionForm onSubmit={handleSendQuestion}>
+        <textarea
+          ref={questionContentRef}
+          placeholder="What would you like to ask?"
+        />
 
-      <main>
-        <RoomHead>
-          <h1>{room && `Sala ${room.name}`}</h1>
-          <span>{questionsLeftLabel}</span>
-        </RoomHead>
+        <FormFooter>
+          {user?.name ? (
+            <UserInfo name={user.name} photoURL={user.photoURL} />
+          ) : (
+            <span>
+              Para enviar uma pergunta,&nbsp;
+              <button type="button">faça login</button>
+            </span>
+          )}
+          <Button type="submit" disabled={!user || isSendingQuestion}>
+            Send question
+          </Button>
+        </FormFooter>
+      </NewQuestionForm>
 
-        <form onSubmit={handleSendQuestion}>
-          <textarea
-            ref={questionContentRef}
-            placeholder="What would you like to ask?"
+      <QuestionList>
+        {questions.map((question) => (
+          <Question
+            key={question.id}
+            content={question.content}
+            authorName={question.author.name ?? ''}
+            authorPhotoURL={question.author.photoURL}
           />
-
-          <FormFooter>
-            {user ? (
-              <UserInfo>
-                {user.photoURL && (
-                  <img src={user.photoURL} alt={user.displayName || ''} />
-                )}
-                <span>{user.displayName}</span>
-              </UserInfo>
-            ) : (
-              <span>
-                Para enviar uma pergunta,&nbsp;
-                <button type="button">faça login</button>
-              </span>
-            )}
-            <Button type="submit" disabled={!user || isSendingQuestion}>
-              Send question
-            </Button>
-          </FormFooter>
-        </form>
-      </main>
-    </Container>
+        ))}
+      </QuestionList>
+    </RoomPageLayout>
   );
 };
 
-export default RoomPage;
+export default GuestRoomPage;

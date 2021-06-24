@@ -1,8 +1,8 @@
 import styled, { css } from 'styled-components';
 
-import { OnboardingPage } from '~/components/pages';
+import { OnboardingPageLayout } from '~/components/layouts';
 
-export const Container = styled(OnboardingPage)`
+export const Container = styled(OnboardingPageLayout)`
   form {
     input,
     button {

@@ -1,6 +1,10 @@
 import styled, { css } from 'styled-components';
 
-export type ButtonVariant = 'primary' | 'outline' | 'outline-gray';
+export type ButtonVariant =
+  | 'primary'
+  | 'outline'
+  | 'outline-gray'
+  | 'outline-danger';
 
 export const Container = styled.button<{ variant: ButtonVariant }>`
   ${({ variant, theme }) => css`
@@ -32,12 +36,13 @@ export const Container = styled.button<{ variant: ButtonVariant }>`
       background-color: ${theme.colors.purple};
       transition: background-color 0.15s;
 
-      :hover:not(:disabled) {
+      :hover:not(:disabled),
+      :focus {
         background-color: ${theme.colors.hover.purple};
       }
     `}
 
-    ${variant === 'outline' &&
+    ${variant.startsWith('outline') &&
     css`
       height: 4rem;
       padding: 0 2.4rem;
@@ -50,7 +55,8 @@ export const Container = styled.button<{ variant: ButtonVariant }>`
       background-color: transparent;
       transition: border-color 0.15s, color 0.15s, box-shadow 0.15s;
 
-      :hover:not(:disabled) {
+      :hover:not(:disabled),
+      :focus {
         border-color: ${theme.colors.hover.purple};
         color: ${theme.colors.hover.purple};
         box-shadow: 0px 0px 0px 1px ${theme.colors.purple};
@@ -66,12 +72,20 @@ export const Container = styled.button<{ variant: ButtonVariant }>`
       font-size: 1.6rem;
       color: ${theme.colors.black};
 
-      background-color: transparent;
-      transition: border-color 0.15s, box-shadow 0.15s;
-
-      :hover:not(:disabled) {
+      :hover:not(:disabled),
+      :focus {
         border-color: ${theme.colors.hover.grayMedium};
         box-shadow: 0px 0px 0px 1px ${theme.colors.hover.grayMedium};
+      }
+    `}
+
+    ${variant === 'outline-danger' &&
+    css`
+      :hover:not(:disabled),
+      :focus {
+        border-color: ${theme.colors.hover.danger};
+        color: ${theme.colors.hover.danger};
+        box-shadow: 0px 0px 0px 1px ${theme.colors.danger};
       }
     `}
   `}
