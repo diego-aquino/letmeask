@@ -29,7 +29,11 @@ const NewRoomPage: FC = () => {
       const roomName = roomNameRef.current?.value.trim();
       if (!roomName || !user) return;
 
-      const roomDoc = await createRoom({ name: roomName, ownerId: user.id });
+      const roomDoc = await createRoom({
+        name: roomName,
+        ownerId: user.id,
+        isActive: true,
+      });
       router.push(`/rooms/${roomDoc.id}`);
     } finally {
       setSubmitButtonIsDisabled(false);

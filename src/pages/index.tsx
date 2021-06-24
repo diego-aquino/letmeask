@@ -5,7 +5,7 @@ import { FC, FormEvent, useRef, useState } from 'react';
 import { GoogleIcon } from '~/assets/icons';
 import { Button, Input } from '~/components/common';
 import { useAuth } from '~/contexts/AuthContext';
-import { getRoomById } from '~/services/rooms';
+import { getRoomDoc } from '~/services/rooms';
 import { Container, Separator } from '~/styles/pages/HomePage';
 
 const HomePage: FC = () => {
@@ -30,11 +30,11 @@ const HomePage: FC = () => {
       const roomCode = roomCodeRef.current?.value.trim();
       if (!roomCode || !user) return;
 
-      const roomDoc = await getRoomById(roomCode);
+      const roomDoc = getRoomDoc(roomCode);
       const roomExists = (await roomDoc.get()).exists;
 
       if (!roomExists) {
-        alert('Room not found.'); // eslint-disable-line no-alert
+        window.alert('Room not found.'); // eslint-disable-line no-alert
         return;
       }
 

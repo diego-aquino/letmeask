@@ -1,38 +1,57 @@
-import { useEffect, useMemo, useState } from 'react';
+import { useEffect, useState } from 'react';
 
-import { Question } from '~/services/questions';
+import { Question, userLikesQuestion } from '~/services/questions';
 import { getRoomDoc } from '~/services/rooms';
 
-interface QuestionWithId extends Question {
-  id: string;
+interface QuestionWithLikeState extends Question {
+  hasLike: boolean;
 }
 
 interface UseQuestionsReturn {
-  questions: QuestionWithId[];
+  questions: QuestionWithLikeState[];
   isLoading: boolean;
 }
 
-function useQuestions(roomId: string): UseQuestionsReturn {
-  const [questions, setQuestions] = useState<QuestionWithId[]>([]);
+function useQuestions(
+  roomId: string,
+  userId: string | null,
+): UseQuestionsReturn {
+  const [questions, setQuestions] = useState<QuestionWithLikeState[]>([]);
   const [isLoading, setIsLoading] = useState(true);
 
-  const roomDoc = useMemo(() => getRoomDoc(roomId), [roomId]);
-
   useEffect(() => {
+    if (!userId) return;
+
+    const roomDoc = getRoomDoc(roomId);
+
     const unsubscribe = roomDoc
       .collection('questions')
-      .onSnapshot(async (snapshot) => {
-        const snapshotQuestions = snapshot.docs.map(
-          (questionDoc) =>
-            ({ id: questionDoc.id, ...questionDoc.data() } as QuestionWithId),
+      .onSnapshot({ includeMetadataChanges: true }, async (snapshot) => {
+        const snapshotQuestions = await Promise.all(
+          snapshot.docs.map(async (questionDoc) => {
+            const questionId = questionDoc.id;
+
+            const hasLike = await userLikesQuestion({
+              userId,
+              roomId,
+              questionId,
+            });
+
+            return {
+              id: questionId,
+              hasLike,
+              ...questionDoc.data(),
+            } as QuestionWithLikeState;
+          }),
         );
 
         setQuestions(snapshotQuestions);
         setIsLoading(false);
       });
 
+    // eslint-disable-next-line consistent-return
     return unsubscribe;
-  }, [roomId, roomDoc]);
+  }, [userId, roomId]);
 
   return { questions, isLoading };
 }

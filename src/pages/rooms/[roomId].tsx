@@ -1,13 +1,13 @@
 import { useRouter } from 'next/router';
 import { ParsedUrlQuery } from 'querystring';
-import { FC, FormEvent, useRef, useState } from 'react';
+import { FC, FormEvent, useCallback, useEffect, useRef, useState } from 'react';
 
 import { Button, UserInfo } from '~/components/common';
 import { RoomPageLayout } from '~/components/layouts';
-import { Question } from '~/components/questions';
+import { Question } from '~/components/rooms';
 import { useAuth } from '~/contexts/AuthContext';
 import { useRoom, useQuestions } from '~/hooks';
-import { createQuestion } from '~/services/questions';
+import { createQuestion, toggleQuestionLike } from '~/services/questions';
 import {
   NewQuestionForm,
   FormFooter,
@@ -19,12 +19,12 @@ interface PageQuery extends ParsedUrlQuery {
 }
 
 const GuestRoomPage: FC = () => {
-  const { query } = useRouter();
-  const { roomId } = query as PageQuery;
+  const router = useRouter();
+  const { roomId } = router.query as PageQuery;
 
   const { user } = useAuth();
   const { room } = useRoom(roomId);
-  const { questions } = useQuestions(roomId);
+  const { questions } = useQuestions(roomId, user?.id ?? null);
 
   const questionContentRef = useRef<HTMLTextAreaElement>(null);
   const [isSendingQuestion, setIsSendingQuestion] = useState(false);
@@ -58,6 +58,29 @@ const GuestRoomPage: FC = () => {
     setIsSendingQuestion(false);
   };
 
+  const handleToggleQuestionLike = useCallback(
+    async (questionId: string, hasLike: boolean) => {
+      if (!user) return;
+      await toggleQuestionLike({
+        userId: user.id,
+        roomId,
+        questionId,
+        newLikeState: hasLike,
+      });
+    },
+    [roomId, user],
+  );
+
+  useEffect(() => {
+    if (room && !room.isActive) {
+      router.replace('/');
+    }
+  }, [room, router]);
+
+  if (!room?.isActive) {
+    return null;
+  }
+
   return (
     <RoomPageLayout
       roomName={room?.name ?? ''}
@@ -89,9 +112,14 @@ const GuestRoomPage: FC = () => {
         {questions.map((question) => (
           <Question
             key={question.id}
+            id={question.id}
             content={question.content}
             authorName={question.author.name ?? ''}
             authorPhotoURL={question.author.photoURL}
+            adminView={false}
+            numberOfLikes={question.numberOfLikes}
+            defaultHasLike={question.hasLike}
+            onToggleQuestionLike={handleToggleQuestionLike}
           />
         ))}
       </QuestionList>
