@@ -16,6 +16,7 @@ const theme = {
     pink: {
       dark: '#E559F9',
       light: '#D67EE2',
+      ultraLight: '#F4F0FF',
     },
     hover: {
       purple: '#6F4BD8',

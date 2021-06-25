@@ -6,7 +6,11 @@ import { RoomPageLayout } from '~/components/layouts';
 import { Question } from '~/components/rooms';
 import { useAuth } from '~/contexts/AuthContext';
 import { useRoom, useQuestions } from '~/hooks';
-import { removeQuestion } from '~/services/questions';
+import {
+  removeQuestion,
+  answerQuestion,
+  highlightQuestion,
+} from '~/services/questions';
 import { closeRoom } from '~/services/rooms';
 import { QuestionList } from '~/styles/pages/GuestRoomPage';
 
@@ -43,6 +47,20 @@ const AdminRoomPage: FC = () => {
     [roomId, user],
   );
 
+  const handleAnswerQuestion = useCallback(
+    async (questionId: string, isAnswered: boolean) => {
+      await answerQuestion(roomId, questionId, isAnswered);
+    },
+    [roomId],
+  );
+
+  const handleHighlightQuestion = useCallback(
+    async (questionId: string, isHighlighted: boolean) => {
+      await highlightQuestion(roomId, questionId, isHighlighted);
+    },
+    [roomId],
+  );
+
   useEffect(() => {
     if (room && !room.isActive) {
       router.replace('/');
@@ -67,6 +85,10 @@ const AdminRoomPage: FC = () => {
             key={question.id}
             adminView
             question={question}
+            initialIsAnswered={question.isAnswered}
+            initialIsHighlighted={question.isHighlighted}
+            onAnswerQuestion={handleAnswerQuestion}
+            onHighlightQuestion={handleHighlightQuestion}
             onRemoveQuestion={handleRemoveQuestion}
           />
         ))}

@@ -1,15 +1,45 @@
 import styled, { css } from 'styled-components';
 
-export const Container = styled.div`
-  ${({ theme }) => css`
+import { Container as UserInfoContainer } from '~/components/common/UserInfo/styles';
+
+interface ContainerProps {
+  answered: boolean;
+  highlighted: boolean;
+}
+
+export const Container = styled.div<ContainerProps>`
+  ${({ theme, answered, highlighted }) => css`
     padding: 2.4rem;
+    border: 1px solid transparent;
     border-radius: 0.8rem;
 
     box-shadow: ${theme.effects.shadows.light};
+
+    transition: border-color 0.1s, background-color 0.1s;
     background-color: ${theme.colors.white.details};
+
+    ${highlighted &&
+    css`
+      border-color: ${theme.colors.purple};
+      background-color: ${theme.colors.pink.ultraLight};
+
+      ${UserInfoContainer} {
+        color: ${theme.colors.black};
+      }
+    `}
+
+    ${answered &&
+    css`
+      background-color: ${theme.colors.gray.light};
+    `}
 
     & + & {
       margin-top: 0.8rem;
+    }
+
+    ${UserInfoContainer} {
+      color: ${theme.colors.gray.dark};
+      font-weight: 400;
     }
 
     p {
@@ -28,10 +58,10 @@ export const Container = styled.div`
 
 export const QuestionControls = styled.div`
   display: flex;
-  align-items: center;
+  align-items: flex-end;
 
   > * + * {
-    margin-left: 1.4rem;
+    margin-left: 1.6rem;
   }
 `;
 
@@ -50,7 +80,7 @@ const questionControlStyles = css`
   `}
 `;
 
-export const Likes = styled.div`
+export const LikesContainer = styled.div`
   ${questionControlStyles}
 
   align-items: flex-end;
@@ -61,25 +91,37 @@ export const Likes = styled.div`
   }
 `;
 
-export const ControlButton = styled.button`
-  ${({ theme }) => css`
+interface ControlButtonProps {
+  highlighted?: boolean;
+}
+
+export const ControlButton = styled.button<ControlButtonProps>`
+  ${({ theme, highlighted }) => css`
     ${questionControlStyles}
 
     border: none;
     cursor: pointer;
 
-    ${Likes} {
+    ${LikesContainer} {
       cursor: inherit;
+      color: inherit;
     }
+
+    ${highlighted &&
+    css`
+      color: ${theme.colors.purple};
+
+      svg path,
+      svg circle {
+        stroke: ${theme.colors.purple};
+      }
+    `}
 
     :hover {
       color: ${theme.colors.hover.purple};
 
-      ${Likes} {
-        color: inherit;
-      }
-
-      svg path {
+      svg path,
+      svg circle {
         stroke: ${theme.colors.hover.purple};
       }
     }

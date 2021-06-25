@@ -1,13 +1,13 @@
 import styled, { css } from 'styled-components';
 
-interface ContainerProps {
-  boldName: boolean;
-}
-
-export const Container = styled.div<ContainerProps>`
-  ${({ theme, boldName }) => css`
+export const Container = styled.div`
+  ${({ theme }) => css`
     display: flex;
     align-items: center;
+
+    color: ${theme.colors.black};
+    font-weight: 500;
+    font-size: 1.4rem;
 
     img {
       width: 3.2rem;
@@ -17,9 +17,6 @@ export const Container = styled.div<ContainerProps>`
 
     span {
       margin-left: 0.8rem;
-      color: ${theme.colors.black};
-      font-weight: ${boldName ? 500 : 400};
-      font-size: 1.4rem;
     }
   `}
 `;

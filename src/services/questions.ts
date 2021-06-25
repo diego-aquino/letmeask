@@ -10,8 +10,8 @@ export interface Question {
     name: string | null;
     photoURL: string | null;
   };
-  isHighlighted: boolean;
   isAnswered: boolean;
+  isHighlighted: boolean;
   numberOfLikes: number;
 }
 
@@ -61,19 +61,19 @@ export async function createQuestion(
   return questionDoc as QuestionReference;
 }
 
-interface ToggleQuestionLikeResources {
+interface SetQuestionLikeArgs {
   userId: string;
   roomId: string;
   questionId: string;
   newLikeState: boolean;
 }
 
-export async function toggleQuestionLike({
+export async function setQuestionLike({
   userId,
   roomId,
   questionId,
   newLikeState,
-}: ToggleQuestionLikeResources): Promise<void> {
+}: SetQuestionLikeArgs): Promise<void> {
   const questionDoc = getQuestionDoc(roomId, questionId);
   const likeDoc = questionDoc.collection('likes').doc(userId);
 
@@ -100,22 +100,22 @@ export async function toggleQuestionLike({
   }
 }
 
-interface UserLikesQuestionResources {
-  userId: string;
-  roomId: string;
-  questionId: string;
+export async function answerQuestion(
+  roomId: string,
+  questionId: string,
+  isAnswered: boolean,
+): Promise<void> {
+  const questionDoc = getQuestionDoc(roomId, questionId);
+  return questionDoc.update({ isAnswered });
 }
 
-export async function userLikesQuestion({
-  userId,
-  roomId,
-  questionId,
-}: UserLikesQuestionResources): Promise<boolean> {
+export async function highlightQuestion(
+  roomId: string,
+  questionId: string,
+  isHighlighted: boolean,
+): Promise<void> {
   const questionDoc = getQuestionDoc(roomId, questionId);
-  const likeDoc = questionDoc.collection('likes').doc(userId);
-  const hasLiked = (await likeDoc.get()).exists;
-
-  return hasLiked;
+  return questionDoc.update({ isHighlighted });
 }
 
 export async function removeQuestion(
@@ -124,4 +124,22 @@ export async function removeQuestion(
 ): Promise<void> {
   const questionDoc = getQuestionDoc(roomId, questionId);
   return questionDoc.delete();
+}
+
+interface UserDidLikeQuestionArgs {
+  userId: string;
+  roomId: string;
+  questionId: string;
+}
+
+export async function userDidLikeQuestion({
+  userId,
+  roomId,
+  questionId,
+}: UserDidLikeQuestionArgs): Promise<boolean> {
+  const questionDoc = getQuestionDoc(roomId, questionId);
+  const likeDoc = questionDoc.collection('likes').doc(userId);
+  const hasLiked = (await likeDoc.get()).exists;
+
+  return hasLiked;
 }

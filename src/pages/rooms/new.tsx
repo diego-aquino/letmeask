@@ -34,7 +34,7 @@ const NewRoomPage: FC = () => {
         ownerId: user.id,
         isActive: true,
       });
-      router.push(`/rooms/${roomDoc.id}`);
+      router.push(`/admin/rooms/${roomDoc.id}`);
     } finally {
       setSubmitButtonIsDisabled(false);
     }

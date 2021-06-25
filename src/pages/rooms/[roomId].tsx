@@ -7,7 +7,7 @@ import { RoomPageLayout } from '~/components/layouts';
 import { Question } from '~/components/rooms';
 import { useAuth } from '~/contexts/AuthContext';
 import { useRoom, useQuestions } from '~/hooks';
-import { createQuestion, toggleQuestionLike } from '~/services/questions';
+import { createQuestion, setQuestionLike } from '~/services/questions';
 import {
   NewQuestionForm,
   FormFooter,
@@ -61,7 +61,7 @@ const GuestRoomPage: FC = () => {
   const handleToggleQuestionLike = useCallback(
     async (questionId: string, hasLike: boolean) => {
       if (!user) return;
-      await toggleQuestionLike({
+      await setQuestionLike({
         userId: user.id,
         roomId,
         questionId,

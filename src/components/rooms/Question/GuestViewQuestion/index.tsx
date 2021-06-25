@@ -4,8 +4,12 @@ import { LikeIcon } from '~/assets/icons';
 import { UserInfo } from '~/components/common';
 import { Question } from '~/services/questions';
 
-import { Container, Likes, QuestionControls } from '../styles';
-import { LikeButton } from './styles';
+import {
+  Container,
+  LikesContainer,
+  QuestionControls,
+  ControlButton,
+} from '../styles';
 
 export interface Props {
   question: Question;
@@ -29,26 +33,30 @@ const GuestViewQuestion: FC<Props> = ({
   };
 
   return (
-    <Container>
+    <Container
+      answered={question.isAnswered}
+      highlighted={question.isHighlighted}
+    >
       <p>{question.content}</p>
       <footer>
         <UserInfo
           name={question.author.name ?? ''}
           photoURL={question.author.photoURL}
-          boldName={false}
         />
         <QuestionControls>
-          <LikeButton
-            type="button"
-            aria-label="Like question"
-            onClick={handleToggleQuestionLike}
-            hasLike={hasLike}
-          >
-            <Likes>
-              <LikeIcon role="img" aria-label="Like icon" />{' '}
-              {question.numberOfLikes}
-            </Likes>
-          </LikeButton>
+          {!question.isAnswered && (
+            <ControlButton
+              type="button"
+              aria-label="Like question"
+              onClick={handleToggleQuestionLike}
+              highlighted={hasLike}
+            >
+              <LikesContainer>
+                <LikeIcon role="img" aria-label="Like icon" />{' '}
+                {question.numberOfLikes}
+              </LikesContainer>
+            </ControlButton>
+          )}
         </QuestionControls>
       </footer>
     </Container>

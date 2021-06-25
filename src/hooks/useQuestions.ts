@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 
-import { Question, userLikesQuestion } from '~/services/questions';
+import { Question, userDidLikeQuestion } from '~/services/questions';
 import { getRoomDoc } from '~/services/rooms';
 
 interface QuestionWithLikeState extends Question {
@@ -31,7 +31,7 @@ function useQuestions(
           snapshot.docs.map(async (questionDoc) => {
             const questionId = questionDoc.id;
 
-            const hasLike = await userLikesQuestion({
+            const hasLike = await userDidLikeQuestion({
               userId,
               roomId,
               questionId,
