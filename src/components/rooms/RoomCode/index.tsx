@@ -32,8 +32,8 @@ const RoomCode: FC<Props> = ({ code }) => {
   return (
     <Container type="button" onClick={copyRoomCodeToClipboard}>
       <IconWrapper>
-        <CopyIcon active={iconName === 'copy'} />
-        <BareCheckIcon active={iconName === 'check'} />
+        <CopyIcon $active={iconName === 'copy'} />
+        <BareCheckIcon $active={iconName === 'check'} />
       </IconWrapper>
       <Code>Room #{code}</Code>
     </Container>

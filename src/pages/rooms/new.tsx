@@ -45,11 +45,11 @@ const NewRoomPage: FC = () => {
 
   return (
     <PageWithLoading loading={!isReady}>
-      <Container>
-        <Head>
-          <title>Letmeask</title>
-        </Head>
+      <Head>
+        <title>New room | Letmeask</title>
+      </Head>
 
+      <Container>
         <h2>Create a new room</h2>
         <form onSubmit={handleCreateRoomSubmit}>
           <Input

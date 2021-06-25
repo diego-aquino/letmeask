@@ -1,6 +1,7 @@
 import { FC, useEffect, useState } from 'react';
 
 import { LoadingIcon, Logo } from '~/assets/icons';
+import { useMount } from '~/hooks';
 
 import { LoadingOverlay } from './styles';
 
@@ -9,6 +10,7 @@ interface Props {
 }
 
 const PageWithLoading: FC<Props> = ({ loading, children }) => {
+  const isMounted = useMount();
   const [loadingOverlayIsHidden, setLoadingOverlayIsHidden] = useState(
     !loading,
   );
@@ -20,13 +22,16 @@ const PageWithLoading: FC<Props> = ({ loading, children }) => {
   }, [loading]);
 
   const handleLoadingOverlayTransitionEnd = () => {
-    setLoadingOverlayIsHidden(true);
+    setTimeout(() => {
+      if (!isMounted.current) return;
+      setLoadingOverlayIsHidden(true);
+    }, 100);
   };
 
   return (
     <>
       <LoadingOverlay
-        active={loading}
+        $active={loading}
         $hidden={loadingOverlayIsHidden}
         aria-hidden={loadingOverlayIsHidden}
         onTransitionEnd={handleLoadingOverlayTransitionEnd}

@@ -53,15 +53,15 @@ export const Container = styled.button`
   `}
 `;
 
-export const CopyIcon = styled(BaseCopyIcon)<{ active: boolean }>`
-  ${({ active }) => css`
+export const CopyIcon = styled(BaseCopyIcon)<{ $active: boolean }>`
+  ${({ $active: active }) => css`
     transition: opacity 0.2s;
     opacity: ${active ? 1 : 0};
   `}
 `;
 
-export const BareCheckIcon = styled(BaseBareCheckIcon)<{ active: boolean }>`
-  ${({ active }) => css`
+export const BareCheckIcon = styled(BaseBareCheckIcon)<{ $active: boolean }>`
+  ${({ $active: active }) => css`
     position: absolute;
     top: 50%;
     left: 50%;

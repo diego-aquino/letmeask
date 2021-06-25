@@ -17,12 +17,12 @@ const fadeIn = keyframes`
 `;
 
 interface LoadingOverlayProps {
-  active: boolean;
+  $active: boolean;
   $hidden: boolean;
 }
 
 export const LoadingOverlay = styled.div<LoadingOverlayProps>`
-  ${({ theme, active, $hidden }) => css`
+  ${({ theme, $active: active, $hidden }) => css`
     width: 100vw;
     height: 100vh;
 
@@ -35,7 +35,7 @@ export const LoadingOverlay = styled.div<LoadingOverlayProps>`
     top: 0;
     left: 0;
 
-    transition: opacity 0.15s 0.1s;
+    transition: opacity 0.15s;
     background-color: ${theme.colors.white.background};
 
     svg {

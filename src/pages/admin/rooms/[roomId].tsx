@@ -74,13 +74,16 @@ const AdminRoomPage: FC = () => {
     [roomId],
   );
 
+  const userIsRoomOwner = user && user.id === room?.ownerId;
+  const isReady = !!(userIsRoomOwner && room?.isActive && !isLoadingQuestions);
+
   useEffect(() => {
-    if (!isLoadingUser && !user && !isLoadingRoom && !room?.isActive) {
+    if (isLoadingRoom || isLoadingUser) return;
+
+    if (!room?.isActive || !userIsRoomOwner) {
       router.replace('/');
     }
-  }, [isLoadingRoom, isLoadingUser, room, router, user]);
-
-  const isReady = !!(user && room && room.isActive && !isLoadingQuestions);
+  }, [isLoadingRoom, isLoadingUser, room, router, userIsRoomOwner]);
 
   return (
     <PageWithLoading loading={!isReady}>

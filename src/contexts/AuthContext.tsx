@@ -53,7 +53,10 @@ const AuthContextProvider: FC = ({ children }) => {
   }, []);
 
   const signOut = useCallback(async () => {
+    setIsLoading(true);
     await auth.signOut();
+    setIsLoading(false);
+    setUser(null);
   }, []);
 
   useEffect(() => {

@@ -29,7 +29,7 @@ const HomePage: FC = () => {
 
     try {
       const roomCode = roomCodeRef.current?.value.trim();
-      if (!roomCode || !user) return;
+      if (!roomCode) return;
 
       const roomSnapshot = await getRoomSnapshot(roomCode);
 
