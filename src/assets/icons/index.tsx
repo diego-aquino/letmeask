@@ -3,6 +3,7 @@ import CheckIcon from './check.svg';
 import CopyIcon from './copy.svg';
 import DeleteIcon from './delete.svg';
 import EmptyQuestionsImage from './empty-questions.svg';
+import EnterIcon from './enter.svg';
 import GoogleIcon from './google-icon.svg';
 import Illustration from './illustration.svg';
 import LikeIcon from './like.svg';
@@ -19,5 +20,6 @@ export {
   CheckIcon,
   AnswerIcon,
   EmptyQuestionsImage,
+  EnterIcon,
   LoadingIcon,
 };

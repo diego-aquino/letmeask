@@ -93,7 +93,7 @@ export const Container = styled.button<{ variant: ButtonVariant }>`
 `;
 
 export const IconWrapper = styled.div`
-  margin-right: 1.2rem;
+  margin-right: 0.8rem;
 
   display: flex;
   align-items: center;

@@ -2,7 +2,7 @@ import Head from 'next/head';
 import { useRouter } from 'next/router';
 import { FC, FormEvent, useRef, useState } from 'react';
 
-import { GoogleIcon } from '~/assets/icons';
+import { EnterIcon, GoogleIcon } from '~/assets/icons';
 import { Button, Input } from '~/components/common';
 import { useAuth } from '~/contexts/AuthContext';
 import { getRoomDoc } from '~/services/rooms';
@@ -71,7 +71,11 @@ const HomePage: FC = () => {
           label="Enter the code of the room"
           autoComplete="off"
         />
-        <Button type="submit" disabled={submitButtonIsDisabled}>
+        <Button
+          type="submit"
+          icon={<EnterIcon />}
+          disabled={submitButtonIsDisabled}
+        >
           Join room
         </Button>
       </form>
