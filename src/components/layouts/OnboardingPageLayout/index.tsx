@@ -1,6 +1,6 @@
 import { FC, HTMLAttributes } from 'react';
 
-import { Illustration } from '~/assets/icons';
+import { Illustration, Logo } from '~/assets/icons';
 
 import { Container, MainContent } from './styles';
 
@@ -15,7 +15,7 @@ const CoverPage: FC<Props> = ({ children, ...rest }) => (
     </aside>
     <main>
       <MainContent>
-        <img src="/logo.svg" alt="Letmeask" />
+        <Logo role="img" aria-label="Letmeask" />
         {children}
       </MainContent>
     </main>
