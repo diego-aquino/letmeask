@@ -52,7 +52,9 @@ const AdminRoomPage: FC = () => {
 
   const handleAnswerQuestion = useCallback(
     async (questionId: string, isAnswered: boolean) => {
-      await answerQuestion(roomId, questionId, isAnswered);
+      await answerQuestion(roomId, questionId, isAnswered, {
+        removeHighlight: true,
+      });
     },
     [roomId],
   );

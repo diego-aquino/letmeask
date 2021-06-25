@@ -104,9 +104,17 @@ export async function answerQuestion(
   roomId: string,
   questionId: string,
   isAnswered: boolean,
+  options: { removeHighlight: boolean },
 ): Promise<void> {
   const questionDoc = getQuestionDoc(roomId, questionId);
-  return questionDoc.update({ isAnswered });
+
+  const isAnsweredPayload = { isAnswered };
+  const isHighlightedPayload = { isHighlighted: false };
+
+  return questionDoc.update({
+    ...isAnsweredPayload,
+    ...(options.removeHighlight ? isHighlightedPayload : {}),
+  });
 }
 
 export async function highlightQuestion(

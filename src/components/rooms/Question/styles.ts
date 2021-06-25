@@ -117,13 +117,18 @@ export const ControlButton = styled.button<ControlButtonProps>`
       }
     `}
 
-    :hover {
+    :hover:not(:disabled) {
       color: ${theme.colors.hover.purple};
 
       svg path,
       svg circle {
         stroke: ${theme.colors.hover.purple};
       }
+    }
+
+    :disabled {
+      cursor: default;
+      opacity: 0.5;
     }
   `}
 `;
