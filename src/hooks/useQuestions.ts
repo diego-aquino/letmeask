@@ -20,8 +20,6 @@ function useQuestions(
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
-    if (!userId) return;
-
     const roomDoc = getRoomDoc(roomId);
 
     const unsubscribe = roomDoc
@@ -31,11 +29,13 @@ function useQuestions(
           snapshot.docs.map(async (questionDoc) => {
             const questionId = questionDoc.id;
 
-            const hasLike = await userDidLikeQuestion({
-              userId,
-              roomId,
-              questionId,
-            });
+            const hasLike = userId
+              ? await userDidLikeQuestion({
+                  userId,
+                  roomId,
+                  questionId,
+                })
+              : false;
 
             return {
               id: questionId,

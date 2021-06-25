@@ -6,8 +6,13 @@ export type ButtonVariant =
   | 'outline-gray'
   | 'outline-danger';
 
-export const Container = styled.button<{ variant: ButtonVariant }>`
-  ${({ variant, theme }) => css`
+export type ButtonSize = 'normal' | 'small';
+
+export const Container = styled.button<{
+  variant: ButtonVariant;
+  size: ButtonSize;
+}>`
+  ${({ theme, variant, size }) => css`
     border-radius: 0.8rem;
 
     display: flex;
@@ -25,16 +30,10 @@ export const Container = styled.button<{ variant: ButtonVariant }>`
 
     ${variant === 'primary' &&
     css`
-      height: 4.8rem;
-      padding: 0 3.2rem;
-
       border: none;
-
-      font-size: 1.6rem;
       color: ${theme.colors.white.details};
-
-      background-color: ${theme.colors.purple};
       transition: background-color 0.15s;
+      background-color: ${theme.colors.purple};
 
       :hover:not(:disabled),
       :focus {
@@ -44,14 +43,8 @@ export const Container = styled.button<{ variant: ButtonVariant }>`
 
     ${variant.startsWith('outline') &&
     css`
-      height: 4rem;
-      padding: 0 2.4rem;
-
       border: 1px solid ${theme.colors.purple};
-
-      font-size: 1.4rem;
       color: ${theme.colors.purple};
-
       background-color: transparent;
       transition: border-color 0.15s, color 0.15s, box-shadow 0.15s;
 
@@ -65,11 +58,7 @@ export const Container = styled.button<{ variant: ButtonVariant }>`
 
     ${variant === 'outline-gray' &&
     css`
-      height: 4.8rem;
-      padding: 0 3.2rem;
       border: 1px solid ${theme.colors.gray.medium};
-
-      font-size: 1.6rem;
       color: ${theme.colors.black};
 
       :hover:not(:disabled),
@@ -89,6 +78,20 @@ export const Container = styled.button<{ variant: ButtonVariant }>`
         box-shadow: 0px 0px 0px 1px ${theme.colors.danger};
       }
     `}
+
+    ${size === 'normal' &&
+    css`
+      height: 4.8rem;
+      padding: 0 3.2rem;
+      font-size: 1.6rem;
+    `}
+
+    ${size === 'small' &&
+    css`
+      height: 4rem;
+      padding: 0 2.4rem;
+      font-size: 1.4rem;
+    `}
   `}
 `;
 
@@ -101,7 +104,7 @@ export const IconWrapper = styled.div`
 
   > svg,
   img {
-    width: 2.4rem;
-    height: 2.4rem;
+    width: 2rem;
+    height: 2rem;
   }
 `;

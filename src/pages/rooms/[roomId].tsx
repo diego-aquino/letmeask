@@ -10,7 +10,7 @@ import { useRoom, useQuestions } from '~/hooks';
 import { createQuestion, setQuestionLike } from '~/services/questions';
 import {
   NewQuestionForm,
-  FormFooter,
+  NewQuestionFormFooter,
   QuestionList,
 } from '~/styles/pages/GuestRoomPage';
 
@@ -22,7 +22,7 @@ const GuestRoomPage: FC = () => {
   const router = useRouter();
   const { roomId } = router.query as PageQuery;
 
-  const { user, isLoading: isLoadingUser } = useAuth();
+  const { user, isLoading: isLoadingUser, signInWithGoogle } = useAuth();
   const { room, isLoading: isLoadingRoom } = useRoom(roomId);
   const { questions, isLoading: isLoadingQuestions } = useQuestions(
     roomId,
@@ -30,28 +30,27 @@ const GuestRoomPage: FC = () => {
   );
 
   const questionContentRef = useRef<HTMLTextAreaElement>(null);
-  const [isSendingQuestion, setIsSendingQuestion] = useState(false);
+  const [isCreatingQuestion, setIsSendingQuestion] = useState(false);
 
-  const handleSendQuestion = async (event: FormEvent) => {
+  const handleCreateQuestion = async (event: FormEvent) => {
     event.preventDefault();
 
     const questionContent = questionContentRef.current?.value.trim();
     if (!questionContent) return;
 
     setIsSendingQuestion(true);
-
-    if (!user) return;
-
     if (questionContentRef.current) {
       questionContentRef.current.value = '';
     }
 
+    const signedInUser = user ?? (await signInWithGoogle());
+
     const question = {
       content: questionContent,
       author: {
-        id: user.id,
-        name: user.name,
-        photoURL: user.photoURL,
+        id: signedInUser.id,
+        name: signedInUser.name,
+        photoURL: signedInUser.photoURL,
       },
       isHighlighted: false,
       isAnswered: false,
@@ -75,12 +74,12 @@ const GuestRoomPage: FC = () => {
   );
 
   useEffect(() => {
-    if (!isLoadingUser && !user && !isLoadingRoom && !room?.isActive) {
+    if (!isLoadingRoom && !room?.isActive) {
       router.replace('/');
     }
   }, [isLoadingRoom, isLoadingUser, room, router, user]);
 
-  const isReady = !!(user && room && room.isActive && !isLoadingQuestions);
+  const isReady = !!(room && room.isActive && !isLoadingQuestions);
 
   return (
     <PageWithLoading loading={!isReady}>
@@ -89,24 +88,20 @@ const GuestRoomPage: FC = () => {
         roomCode={roomId}
         numberOfQuestions={questions.length}
       >
-        <NewQuestionForm onSubmit={handleSendQuestion}>
+        <NewQuestionForm onSubmit={handleCreateQuestion}>
           <textarea
             ref={questionContentRef}
             placeholder="What would you like to ask?"
           />
 
-          <FormFooter>
-            {user?.name ? (
+          <NewQuestionFormFooter>
+            {user?.name && (
               <UserInfo name={user.name} photoURL={user.photoURL} />
-            ) : (
-              <span>
-                <button type="button">Login</button> to create a question
-              </span>
             )}
-            <Button type="submit" disabled={!user || isSendingQuestion}>
-              Send question
+            <Button type="submit" size="small" disabled={isCreatingQuestion}>
+              {user ? 'Ask question' : 'Sign in to ask a question'}
             </Button>
-          </FormFooter>
+          </NewQuestionFormFooter>
         </NewQuestionForm>
 
         <QuestionList>

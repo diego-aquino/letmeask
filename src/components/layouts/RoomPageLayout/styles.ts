@@ -23,12 +23,10 @@ export const Container = styled.div`
     }
 
     > div {
-      display: flex;
+      display: grid;
       align-items: center;
-
-      > * + * {
-        margin-left: 0.8rem;
-      }
+      grid-template-columns: repeat(5, auto);
+      column-gap: 0.8rem;
     }
   }
 
@@ -43,7 +41,16 @@ export const Container = styled.div`
   }
 `;
 
-export const RoomHead = styled.div`
+export const HeaderSeparator = styled.div`
+  ${({ theme }) => css`
+    height: 3.2rem;
+    width: 1px;
+    margin: 0 0.8rem;
+    background-color: ${theme.colors.gray.light};
+  `}
+`;
+
+export const RoomTitle = styled.div`
   ${({ theme }) => css`
     margin: 3.2rem 0 2.4rem;
     display: flex;

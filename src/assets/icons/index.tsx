@@ -1,3 +1,5 @@
+import styled from 'styled-components';
+
 import AnswerIcon from './answer.svg';
 import CheckIcon from './check.svg';
 import CopyIcon from './copy.svg';
@@ -10,6 +12,10 @@ import LikeIcon from './like.svg';
 import LoadingIcon from './loading.svg';
 import Logo from './Logo';
 
+const ExitIcon = styled(EnterIcon)`
+  transform: rotate(180deg);
+`;
+
 export {
   Illustration,
   Logo,
@@ -21,5 +27,6 @@ export {
   AnswerIcon,
   EmptyQuestionsImage,
   EnterIcon,
+  ExitIcon,
   LoadingIcon,
 };
