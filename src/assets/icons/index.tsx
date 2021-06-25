@@ -6,6 +6,7 @@ import EmptyQuestionsImage from './empty-questions.svg';
 import GoogleIcon from './google-icon.svg';
 import Illustration from './illustration.svg';
 import LikeIcon from './like.svg';
+import LoadingIcon from './loading.svg';
 import Logo from './Logo';
 
 export {
@@ -18,4 +19,5 @@ export {
   CheckIcon,
   AnswerIcon,
   EmptyQuestionsImage,
+  LoadingIcon,
 };

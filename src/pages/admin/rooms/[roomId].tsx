@@ -2,7 +2,7 @@ import { useRouter } from 'next/router';
 import { ParsedUrlQuery } from 'querystring';
 import { FC, useCallback, useEffect } from 'react';
 
-import { RoomPageLayout } from '~/components/layouts';
+import { PageWithLoading, RoomPageLayout } from '~/components/layouts';
 import { EmptyQuestions, Question } from '~/components/rooms';
 import { useAuth } from '~/contexts/AuthContext';
 import { useRoom, useQuestions } from '~/hooks';
@@ -22,9 +22,12 @@ const AdminRoomPage: FC = () => {
   const router = useRouter();
   const { roomId } = router.query as PageQuery;
 
-  const { user } = useAuth();
-  const { room } = useRoom(roomId);
-  const { questions } = useQuestions(roomId, user?.id ?? null);
+  const { user, isLoading: isLoadingUser } = useAuth();
+  const { room, isLoading: isLoadingRoom } = useRoom(roomId);
+  const { questions, isLoading: isLoadingQuestions } = useQuestions(
+    roomId,
+    user?.id ?? null,
+  );
 
   const handleCloseRoom = useCallback(async () => {
     await closeRoom(roomId);
@@ -62,40 +65,40 @@ const AdminRoomPage: FC = () => {
   );
 
   useEffect(() => {
-    if (room && !room.isActive) {
+    if (!isLoadingUser && !user && !isLoadingRoom && !room?.isActive) {
       router.replace('/');
     }
-  }, [room, router]);
+  }, [isLoadingRoom, isLoadingUser, room, router, user]);
 
-  if (!room?.isActive) {
-    return null;
-  }
+  const isReady = !!(user && room && room.isActive && !isLoadingQuestions);
 
   return (
-    <RoomPageLayout
-      roomName={room?.name ?? ''}
-      roomCode={roomId}
-      numberOfQuestions={questions.length}
-      onCloseRoom={handleCloseRoom}
-      admin
-    >
-      <QuestionList>
-        {questions.map((question) => (
-          <Question
-            key={question.id}
-            adminView
-            question={question}
-            initialIsAnswered={question.isAnswered}
-            initialIsHighlighted={question.isHighlighted}
-            onAnswerQuestion={handleAnswerQuestion}
-            onHighlightQuestion={handleHighlightQuestion}
-            onRemoveQuestion={handleRemoveQuestion}
-          />
-        ))}
-      </QuestionList>
+    <PageWithLoading loading={!isReady}>
+      <RoomPageLayout
+        roomName={room?.name ?? ''}
+        roomCode={roomId}
+        numberOfQuestions={questions.length}
+        onCloseRoom={handleCloseRoom}
+        admin
+      >
+        <QuestionList>
+          {questions.map((question) => (
+            <Question
+              key={question.id}
+              adminView
+              question={question}
+              initialIsAnswered={question.isAnswered}
+              initialIsHighlighted={question.isHighlighted}
+              onAnswerQuestion={handleAnswerQuestion}
+              onHighlightQuestion={handleHighlightQuestion}
+              onRemoveQuestion={handleRemoveQuestion}
+            />
+          ))}
+        </QuestionList>
 
-      {questions.length === 0 && <EmptyQuestions adminView />}
-    </RoomPageLayout>
+        {questions.length === 0 && <EmptyQuestions adminView />}
+      </RoomPageLayout>
+    </PageWithLoading>
   );
 };
 

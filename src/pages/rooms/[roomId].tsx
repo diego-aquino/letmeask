@@ -3,7 +3,7 @@ import { ParsedUrlQuery } from 'querystring';
 import { FC, FormEvent, useCallback, useEffect, useRef, useState } from 'react';
 
 import { Button, UserInfo } from '~/components/common';
-import { RoomPageLayout } from '~/components/layouts';
+import { PageWithLoading, RoomPageLayout } from '~/components/layouts';
 import { EmptyQuestions, Question } from '~/components/rooms';
 import { useAuth } from '~/contexts/AuthContext';
 import { useRoom, useQuestions } from '~/hooks';
@@ -22,9 +22,12 @@ const GuestRoomPage: FC = () => {
   const router = useRouter();
   const { roomId } = router.query as PageQuery;
 
-  const { user } = useAuth();
-  const { room } = useRoom(roomId);
-  const { questions } = useQuestions(roomId, user?.id ?? null);
+  const { user, isLoading: isLoadingUser } = useAuth();
+  const { room, isLoading: isLoadingRoom } = useRoom(roomId);
+  const { questions, isLoading: isLoadingQuestions } = useQuestions(
+    roomId,
+    user?.id ?? null,
+  );
 
   const questionContentRef = useRef<HTMLTextAreaElement>(null);
   const [isSendingQuestion, setIsSendingQuestion] = useState(false);
@@ -72,55 +75,55 @@ const GuestRoomPage: FC = () => {
   );
 
   useEffect(() => {
-    if (room && !room.isActive) {
+    if (!isLoadingUser && !user && !isLoadingRoom && !room?.isActive) {
       router.replace('/');
     }
-  }, [room, router]);
+  }, [isLoadingRoom, isLoadingUser, room, router, user]);
 
-  if (!room?.isActive) {
-    return null;
-  }
+  const isReady = !!(user && room && room.isActive && !isLoadingQuestions);
 
   return (
-    <RoomPageLayout
-      roomName={room?.name ?? ''}
-      roomCode={roomId}
-      numberOfQuestions={questions.length}
-    >
-      <NewQuestionForm onSubmit={handleSendQuestion}>
-        <textarea
-          ref={questionContentRef}
-          placeholder="What would you like to ask?"
-        />
-
-        <FormFooter>
-          {user?.name ? (
-            <UserInfo name={user.name} photoURL={user.photoURL} />
-          ) : (
-            <span>
-              <button type="button">Login</button> to create a question
-            </span>
-          )}
-          <Button type="submit" disabled={!user || isSendingQuestion}>
-            Send question
-          </Button>
-        </FormFooter>
-      </NewQuestionForm>
-
-      <QuestionList>
-        {questions.map((question) => (
-          <Question
-            key={question.id}
-            adminView={false}
-            question={question}
-            initialHasLike={question.hasLike}
-            onToggleQuestionLike={handleToggleQuestionLike}
+    <PageWithLoading loading={!isReady}>
+      <RoomPageLayout
+        roomName={room?.name ?? ''}
+        roomCode={roomId}
+        numberOfQuestions={questions.length}
+      >
+        <NewQuestionForm onSubmit={handleSendQuestion}>
+          <textarea
+            ref={questionContentRef}
+            placeholder="What would you like to ask?"
           />
-        ))}
-      </QuestionList>
 
-      {questions.length === 0 && <EmptyQuestions adminView={false} />}
-    </RoomPageLayout>
+          <FormFooter>
+            {user?.name ? (
+              <UserInfo name={user.name} photoURL={user.photoURL} />
+            ) : (
+              <span>
+                <button type="button">Login</button> to create a question
+              </span>
+            )}
+            <Button type="submit" disabled={!user || isSendingQuestion}>
+              Send question
+            </Button>
+          </FormFooter>
+        </NewQuestionForm>
+
+        <QuestionList>
+          {questions.map((question) => (
+            <Question
+              key={question.id}
+              adminView={false}
+              question={question}
+              initialHasLike={question.hasLike}
+              onToggleQuestionLike={handleToggleQuestionLike}
+            />
+          ))}
+        </QuestionList>
+
+        {questions.length === 0 && <EmptyQuestions adminView={false} />}
+      </RoomPageLayout>
+    </PageWithLoading>
   );
 };
 

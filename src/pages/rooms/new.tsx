@@ -4,6 +4,7 @@ import { useRouter } from 'next/router';
 import { FC, FormEvent, useEffect, useRef, useState } from 'react';
 
 import { Button, Input } from '~/components/common';
+import { PageWithLoading } from '~/components/layouts';
 import { useAuth } from '~/contexts/AuthContext';
 import { createRoom } from '~/services/rooms';
 import { Container } from '~/styles/pages/NewRoomPage';
@@ -40,34 +41,34 @@ const NewRoomPage: FC = () => {
     }
   };
 
-  if (!user && isLoading) {
-    return null;
-  }
+  const isReady = !isLoading && user;
 
   return (
-    <Container>
-      <Head>
-        <title>Letmeask</title>
-      </Head>
+    <PageWithLoading loading={!isReady}>
+      <Container>
+        <Head>
+          <title>Letmeask</title>
+        </Head>
 
-      <h2>Create a new room</h2>
-      <form onSubmit={handleCreateRoomSubmit}>
-        <Input
-          ref={roomNameRef}
-          type="text"
-          id="roomName"
-          label="Room name"
-          autoComplete="off"
-        />
-        <Button type="submit" disabled={submitButtonIsDisabled}>
-          Create room
-        </Button>
-      </form>
-      <p>
-        Want to join an existing room?&nbsp;
-        <Link href="/">Click here</Link>
-      </p>
-    </Container>
+        <h2>Create a new room</h2>
+        <form onSubmit={handleCreateRoomSubmit}>
+          <Input
+            ref={roomNameRef}
+            type="text"
+            id="roomName"
+            label="Room name"
+            autoComplete="off"
+          />
+          <Button type="submit" disabled={submitButtonIsDisabled}>
+            Create room
+          </Button>
+        </form>
+        <p>
+          Want to join an existing room?&nbsp;
+          <Link href="/">Click here</Link>
+        </p>
+      </Container>
+    </PageWithLoading>
   );
 };
 
