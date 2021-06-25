@@ -5,8 +5,9 @@ import { FC, FormEvent, useRef, useState } from 'react';
 import { EnterIcon, GoogleIcon } from '~/assets/icons';
 import { Button, Input } from '~/components/common';
 import { useAuth } from '~/contexts/AuthContext';
-import { getRoomDoc } from '~/services/rooms';
+import { getRoomSnapshot } from '~/services/rooms';
 import { Container, Separator } from '~/styles/pages/HomePage';
+import { notify } from '~/utils';
 
 const HomePage: FC = () => {
   const router = useRouter();
@@ -30,11 +31,16 @@ const HomePage: FC = () => {
       const roomCode = roomCodeRef.current?.value.trim();
       if (!roomCode || !user) return;
 
-      const roomDoc = getRoomDoc(roomCode);
-      const roomExists = (await roomDoc.get()).exists;
+      const roomSnapshot = await getRoomSnapshot(roomCode);
 
-      if (!roomExists) {
-        window.alert('Room not found.'); // eslint-disable-line no-alert
+      if (!roomSnapshot.exists) {
+        notify.error('Room not found');
+        return;
+      }
+
+      const room = roomSnapshot.data();
+      if (!room?.isActive) {
+        notify.error('This room is no longer active');
         return;
       }
 

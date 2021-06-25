@@ -9,7 +9,9 @@ interface Props {
 }
 
 const PageWithLoading: FC<Props> = ({ loading, children }) => {
-  const [loadingOverlayIsHidden, setLoadingOverlayIsHidden] = useState(false);
+  const [loadingOverlayIsHidden, setLoadingOverlayIsHidden] = useState(
+    !loading,
+  );
 
   useEffect(() => {
     if (loading) {

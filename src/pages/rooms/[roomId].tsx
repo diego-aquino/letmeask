@@ -13,6 +13,7 @@ import {
   NewQuestionFormFooter,
   QuestionList,
 } from '~/styles/pages/GuestRoomPage';
+import { notify } from '~/utils';
 
 interface PageQuery extends ParsedUrlQuery {
   roomId: string;
@@ -57,7 +58,9 @@ const GuestRoomPage: FC = () => {
     };
 
     await createQuestion(question, roomId);
+
     setIsSendingQuestion(false);
+    notify.success('Question asked');
   };
 
   const handleToggleQuestionLike = useCallback(

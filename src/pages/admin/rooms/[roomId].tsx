@@ -13,6 +13,7 @@ import {
 } from '~/services/questions';
 import { closeRoom } from '~/services/rooms';
 import { QuestionList } from '~/styles/pages/GuestRoomPage';
+import { notify } from '~/utils';
 
 interface PageQuery extends ParsedUrlQuery {
   roomId: string;
@@ -30,7 +31,14 @@ const AdminRoomPage: FC = () => {
   );
 
   const handleCloseRoom = useCallback(async () => {
+    // eslint-disable-next-line no-alert
+    const closeWasConfirmed = window.confirm(
+      'Are you sure you want to close this room?',
+    );
+    if (!closeWasConfirmed) return;
+
     await closeRoom(roomId);
+    notify.success('Room is now closed');
     router.push('/');
   }, [roomId, router]);
 

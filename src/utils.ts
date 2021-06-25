@@ -1,4 +1,5 @@
 import { LegacyRef, MutableRefObject, RefCallback } from 'react';
+import toast from 'react-hot-toast';
 
 export function mergeRefs<T>(
   ...refs: Array<MutableRefObject<T> | LegacyRef<T>>
@@ -14,3 +15,15 @@ export function mergeRefs<T>(
     });
   };
 }
+
+export const notify = {
+  info(message: string, duration = 2500): void {
+    toast(message, { duration });
+  },
+  error(message: string, duration = 3000): void {
+    toast.error(message, { duration });
+  },
+  success(message: string, duration = 2000): void {
+    toast.success(message, { duration });
+  },
+};
