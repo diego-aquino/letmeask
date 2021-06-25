@@ -1,6 +1,7 @@
 import styled from 'styled-components';
 
 import AnswerIcon from './answer.svg';
+import BareCheckIcon from './bare-check.svg';
 import CheckIcon from './check.svg';
 import CopyIcon from './copy.svg';
 import DeleteIcon from './delete.svg';
@@ -29,4 +30,5 @@ export {
   EnterIcon,
   ExitIcon,
   LoadingIcon,
+  BareCheckIcon,
 };
