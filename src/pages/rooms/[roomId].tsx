@@ -4,7 +4,7 @@ import { FC, FormEvent, useCallback, useEffect, useRef, useState } from 'react';
 
 import { Button, UserInfo } from '~/components/common';
 import { RoomPageLayout } from '~/components/layouts';
-import { Question } from '~/components/rooms';
+import { EmptyQuestions, Question } from '~/components/rooms';
 import { useAuth } from '~/contexts/AuthContext';
 import { useRoom, useQuestions } from '~/hooks';
 import { createQuestion, setQuestionLike } from '~/services/questions';
@@ -98,8 +98,7 @@ const GuestRoomPage: FC = () => {
             <UserInfo name={user.name} photoURL={user.photoURL} />
           ) : (
             <span>
-              Para enviar uma pergunta,&nbsp;
-              <button type="button">faça login</button>
+              <button type="button">Login</button> to create a question
             </span>
           )}
           <Button type="submit" disabled={!user || isSendingQuestion}>
@@ -119,6 +118,8 @@ const GuestRoomPage: FC = () => {
           />
         ))}
       </QuestionList>
+
+      {questions.length === 0 && <EmptyQuestions adminView={false} />}
     </RoomPageLayout>
   );
 };

@@ -1,9 +1,14 @@
 import styled, { css } from 'styled-components';
 
 export const Container = styled.div`
+  min-height: 100vh;
   padding-bottom: 3.6rem;
 
+  display: flex;
+  flex-direction: column;
+
   header {
+    width: 100%;
     max-width: 1120px;
     margin: 0 auto;
     padding: 2.4rem;
@@ -28,8 +33,13 @@ export const Container = styled.div`
   }
 
   main {
+    width: 100%;
     max-width: 800px;
     margin: 0 auto;
+
+    display: flex;
+    flex-direction: column;
+    flex: 1;
   }
 `;
 

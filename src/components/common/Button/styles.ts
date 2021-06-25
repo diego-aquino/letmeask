@@ -75,6 +75,7 @@ export const Container = styled.button<{ variant: ButtonVariant }>`
       :hover:not(:disabled),
       :focus {
         border-color: ${theme.colors.hover.grayMedium};
+        color: ${theme.colors.black};
         box-shadow: 0px 0px 0px 1px ${theme.colors.hover.grayMedium};
       }
     `}

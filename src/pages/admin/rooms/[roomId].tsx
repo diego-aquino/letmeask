@@ -3,7 +3,7 @@ import { ParsedUrlQuery } from 'querystring';
 import { FC, useCallback, useEffect } from 'react';
 
 import { RoomPageLayout } from '~/components/layouts';
-import { Question } from '~/components/rooms';
+import { EmptyQuestions, Question } from '~/components/rooms';
 import { useAuth } from '~/contexts/AuthContext';
 import { useRoom, useQuestions } from '~/hooks';
 import {
@@ -93,6 +93,8 @@ const AdminRoomPage: FC = () => {
           />
         ))}
       </QuestionList>
+
+      {questions.length === 0 && <EmptyQuestions adminView />}
     </RoomPageLayout>
   );
 };
