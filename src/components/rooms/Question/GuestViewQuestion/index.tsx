@@ -43,6 +43,8 @@ const GuestViewQuestion: FC<Props> = ({
     toggleHasLike();
   };
 
+  const likeButtonLabel = hasLike ? 'Remove like' : 'Like question';
+
   return (
     <Container
       answered={question.isAnswered}
@@ -58,7 +60,8 @@ const GuestViewQuestion: FC<Props> = ({
           {!question.isAnswered && (
             <ControlButton
               type="button"
-              aria-label="Like question"
+              title={likeButtonLabel}
+              aria-label={likeButtonLabel}
               onClick={handleToggleQuestionLike}
               highlighted={hasLike}
             >

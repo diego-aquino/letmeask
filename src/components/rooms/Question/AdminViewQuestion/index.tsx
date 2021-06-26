@@ -48,6 +48,14 @@ const AdminViewQuestion: FC<Props> = ({
     toggleIsHighlighted(false);
   };
 
+  const checkButtonLabel = isAnswered
+    ? 'Mark question as not answered'
+    : 'Mark question as answered';
+
+  const highlightButtonLabel = isHighlighted
+    ? 'Remove highlight'
+    : 'Highlight question';
+
   return (
     <Container answered={isAnswered} highlighted={isHighlighted}>
       <p>{question.content}</p>
@@ -64,8 +72,8 @@ const AdminViewQuestion: FC<Props> = ({
 
           <ControlButton
             type="button"
-            title="Mark question as answered"
-            aria-label="Mark question as answered"
+            title={checkButtonLabel}
+            aria-label={checkButtonLabel}
             highlighted={isAnswered}
             onClick={handleAnswerQuestion}
           >
@@ -74,8 +82,8 @@ const AdminViewQuestion: FC<Props> = ({
 
           <ControlButton
             type="button"
-            title="Highlight question"
-            aria-label="Highlight question"
+            title={highlightButtonLabel}
+            aria-label={highlightButtonLabel}
             highlighted={isHighlighted}
             onClick={handleHighlightQuestion}
             disabled={isAnswered}
