@@ -2,7 +2,7 @@ import styled, { css } from 'styled-components';
 
 export const Container = styled.div`
   ${({ theme }) => css`
-    margin-top: 3.2rem;
+    margin: 3.2rem 0 7.2rem;
     text-align: center;
 
     svg,

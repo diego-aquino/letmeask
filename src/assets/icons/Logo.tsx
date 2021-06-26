@@ -54,8 +54,8 @@ const Logo: FC<Props> = (props) => (
         y2="53.1105"
         gradientUnits="userSpaceOnUse"
       >
-        <stop stopColor="#485BFF" />
-        <stop offset="1" stopColor="#FF59F8" />
+        <stop stopColor="#667eea" />
+        <stop offset="1" stopColor="#a931f7" />
       </linearGradient>
       <linearGradient
         id="paint1_linear"
@@ -65,8 +65,8 @@ const Logo: FC<Props> = (props) => (
         y2="53.1105"
         gradientUnits="userSpaceOnUse"
       >
-        <stop stopColor="#485BFF" />
-        <stop offset="1" stopColor="#FF59F8" />
+        <stop stopColor="#667eea" />
+        <stop offset="1" stopColor="#a931f7" />
       </linearGradient>
       <linearGradient
         id="paint2_linear"
@@ -76,8 +76,8 @@ const Logo: FC<Props> = (props) => (
         y2="53.1105"
         gradientUnits="userSpaceOnUse"
       >
-        <stop stopColor="#485BFF" />
-        <stop offset="1" stopColor="#FF59F8" />
+        <stop stopColor="#667eea" />
+        <stop offset="1" stopColor="#a931f7" />
       </linearGradient>
       <linearGradient
         id="paint3_linear"
@@ -87,8 +87,8 @@ const Logo: FC<Props> = (props) => (
         y2="77.547"
         gradientUnits="userSpaceOnUse"
       >
-        <stop stopColor="#485BFF" />
-        <stop offset="1" stopColor="#FF59F8" />
+        <stop stopColor="#667eea" />
+        <stop offset="1" stopColor="#a931f7" />
       </linearGradient>
     </defs>
   </svg>

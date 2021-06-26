@@ -17,8 +17,8 @@ export const Container = styled(BaseContainer)<ContainerProps>`
 
     ${highlighted &&
     css`
-      border-color: ${theme.colors.purple};
-      background-color: ${theme.colors.pink.ultraLight};
+      border-color: ${theme.colors.blue};
+      background-color: ${theme.colors.purple.ultraLight};
 
       ${UserInfoContainer} {
         color: ${theme.colors.black};

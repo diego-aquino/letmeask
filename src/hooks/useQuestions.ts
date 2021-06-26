@@ -13,13 +13,15 @@ interface UseQuestionsReturn {
 }
 
 function useQuestions(
-  roomId: string,
+  roomId: string | null,
   userId: string | null,
 ): UseQuestionsReturn {
   const [questions, setQuestions] = useState<QuestionWithLikeState[]>([]);
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
+    if (!roomId) return;
+
     const roomDoc = getRoomDoc(roomId);
 
     const unsubscribe = roomDoc

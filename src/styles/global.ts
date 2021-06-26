@@ -22,6 +22,7 @@ const GlobalStyle = createGlobalStyle`
     body {
       color: ${theme.colors.black};
       background-color: ${theme.colors.white.background};
+      overflow-x: hidden;
     }
   `}
 `;

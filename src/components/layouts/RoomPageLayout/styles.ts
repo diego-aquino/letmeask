@@ -146,7 +146,7 @@ export const RoomTitle = styled.div`
       font-size: 1.4rem;
       text-align: center;
 
-      background-color: ${theme.colors.pink.dark};
+      background-color: ${theme.colors.purple.dark};
     }
   `}
 `;

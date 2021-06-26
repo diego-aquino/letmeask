@@ -27,7 +27,7 @@ export const Container = styled(OnboardingPageLayout)`
         color: ${theme.colors.gray.dark};
 
         a {
-          color: ${theme.colors.purple};
+          color: ${theme.colors.blue};
           text-decoration: none;
           font-weight: 500;
 
