@@ -40,27 +40,30 @@ const GuestRoomPage: FC = () => {
     if (!questionContent) return;
 
     setIsSendingQuestion(true);
-    if (questionContentRef.current) {
-      questionContentRef.current.value = '';
+
+    try {
+      const signedInUser = user ?? (await signInWithGoogle());
+
+      if (questionContentRef.current) {
+        questionContentRef.current.value = '';
+      }
+
+      const question = {
+        content: questionContent,
+        author: {
+          id: signedInUser.id,
+          name: signedInUser.name,
+          photoURL: signedInUser.photoURL,
+        },
+        isHighlighted: false,
+        isAnswered: false,
+      };
+
+      await createQuestion(question, roomId);
+      notify.success('Question asked');
+    } finally {
+      setIsSendingQuestion(false);
     }
-
-    const signedInUser = user ?? (await signInWithGoogle());
-
-    const question = {
-      content: questionContent,
-      author: {
-        id: signedInUser.id,
-        name: signedInUser.name,
-        photoURL: signedInUser.photoURL,
-      },
-      isHighlighted: false,
-      isAnswered: false,
-    };
-
-    await createQuestion(question, roomId);
-
-    setIsSendingQuestion(false);
-    notify.success('Question asked');
   };
 
   const handleToggleQuestionLike = useCallback(
