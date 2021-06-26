@@ -6,7 +6,7 @@ import { Container, MainContent } from './styles';
 
 type Props = HTMLAttributes<HTMLDivElement>;
 
-const CoverPage: FC<Props> = ({ children, ...rest }) => (
+const OnboardingPageLayout: FC<Props> = ({ children, ...rest }) => (
   <Container {...rest}>
     <aside>
       <Illustration role="img" />
@@ -22,4 +22,4 @@ const CoverPage: FC<Props> = ({ children, ...rest }) => (
   </Container>
 );
 
-export default CoverPage;
+export default OnboardingPageLayout;

@@ -33,8 +33,13 @@ export const NewQuestionFormFooter = styled.div`
   button {
     margin-left: auto;
   }
-`;
 
+  @media (max-width: 768px) {
+    button {
+      margin-left: 1.6rem;
+    }
+  }
+`;
 export const QuestionList = styled.div`
-  margin-top: 4.8rem;
+  margin-top: 3.2rem;
 `;

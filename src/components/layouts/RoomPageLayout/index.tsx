@@ -60,33 +60,35 @@ const RoomPageLayout: FC<Props> = ({
         <div>
           <RoomCode code={roomCode} />
 
-          {isAdmin && (
-            <Button
-              type="button"
-              variant="outline-danger"
-              size="small"
-              onClick={onCloseRoom}
-            >
-              Close room
-            </Button>
-          )}
-          {!isAdmin && (
-            <Button
-              type="button"
-              variant="outline"
-              size="small"
-              icon={<ExitIcon />}
-              onClick={handleExitRoom}
-            >
-              Exit room
-            </Button>
-          )}
+          <div>
+            {isAdmin && (
+              <Button
+                type="button"
+                variant="outline-danger"
+                size="small"
+                onClick={onCloseRoom}
+              >
+                Close room
+              </Button>
+            )}
+            {!isAdmin && (
+              <Button
+                type="button"
+                variant="outline"
+                size="small"
+                icon={<ExitIcon />}
+                onClick={handleExitRoom}
+              >
+                Exit room
+              </Button>
+            )}
 
-          <HeaderSeparator />
+            <HeaderSeparator />
 
-          <Button type="button" size="small" onClick={handleSignOut}>
-            Sign out
-          </Button>
+            <Button type="button" size="small" onClick={handleSignOut}>
+              Sign out
+            </Button>
+          </div>
         </div>
       </header>
 

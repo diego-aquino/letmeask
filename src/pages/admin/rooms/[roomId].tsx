@@ -77,6 +77,8 @@ const AdminRoomPage: FC = () => {
   const userIsRoomOwner = user && user.id === room?.ownerId;
   const isReady = !!(userIsRoomOwner && room?.isActive && !isLoadingQuestions);
 
+  console.log({ isLoadingRoom, room });
+
   useEffect(() => {
     if (isLoadingRoom || isLoadingUser) return;
 
