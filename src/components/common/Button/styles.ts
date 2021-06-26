@@ -33,26 +33,26 @@ export const Container = styled.button<{
       border: none;
       color: ${theme.colors.white.details};
       transition: background-color 0.15s;
-      background-color: ${theme.colors.purple};
+      background-color: ${theme.colors.blue};
 
       :hover:not(:disabled),
       :focus {
-        background-color: ${theme.colors.hover.purple};
+        background-color: ${theme.colors.hover.blue};
       }
     `}
 
     ${variant.startsWith('outline') &&
     css`
-      border: 1px solid ${theme.colors.purple};
-      color: ${theme.colors.purple};
+      border: 1px solid ${theme.colors.blue};
+      color: ${theme.colors.blue};
       background-color: transparent;
       transition: border-color 0.15s, color 0.15s, box-shadow 0.15s;
 
       :hover:not(:disabled),
       :focus {
-        border-color: ${theme.colors.hover.purple};
-        color: ${theme.colors.hover.purple};
-        box-shadow: 0px 0px 0px 1px ${theme.colors.purple};
+        border-color: ${theme.colors.hover.blue};
+        color: ${theme.colors.hover.blue};
+        box-shadow: 0px 0px 0px 1px ${theme.colors.blue};
       }
     `}
 

@@ -17,8 +17,8 @@ export const NewQuestionForm = styled.form`
       transition: border-color 0.15s, box-shadow 0.15s;
 
       :focus {
-        border-color: ${theme.colors.hover.purple};
-        box-shadow: 0px 0px 0px 1px ${theme.colors.purple};
+        border-color: ${theme.colors.hover.blue};
+        box-shadow: 0px 0px 0px 1px ${theme.colors.blue};
       }
     }
   `}

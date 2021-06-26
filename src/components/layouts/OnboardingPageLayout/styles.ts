@@ -16,7 +16,7 @@ export const Container = styled.div`
       flex: 7;
 
       color: ${theme.colors.white.details};
-      background-color: ${theme.colors.purple};
+      background-color: ${theme.colors.blue};
 
       svg {
         height: 36rem;

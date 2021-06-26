@@ -20,8 +20,8 @@ export const Container = styled.div<ContainerProps>`
 
     ${highlighted &&
     css`
-      border-color: ${theme.colors.purple};
-      background-color: ${theme.colors.pink.ultraLight};
+      border-color: ${theme.colors.blue};
+      background-color: ${theme.colors.purple.ultraLight};
 
       ${UserInfoContainer} {
         color: ${theme.colors.black};
@@ -109,20 +109,20 @@ export const ControlButton = styled.button<ControlButtonProps>`
 
     ${highlighted &&
     css`
-      color: ${theme.colors.purple};
+      color: ${theme.colors.blue};
 
       svg path,
       svg circle {
-        stroke: ${theme.colors.purple};
+        stroke: ${theme.colors.blue};
       }
     `}
 
     :hover:not(:disabled) {
-      color: ${theme.colors.hover.purple};
+      color: ${theme.colors.hover.blue};
 
       svg path,
       svg circle {
-        stroke: ${theme.colors.hover.purple};
+        stroke: ${theme.colors.hover.blue};
       }
     }
 

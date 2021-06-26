@@ -2,7 +2,7 @@ const theme = {
   colors: {
     black: '#29292E',
     shadow: '#050206',
-    purple: '#835AFD',
+    blue: '#7B77EE',
     danger: '#E73F5D',
     gray: {
       dark: '#737380',
@@ -13,13 +13,13 @@ const theme = {
       background: '#F8F8F8',
       details: '#FEFEFE',
     },
-    pink: {
-      dark: '#E559F9',
-      light: '#D67EE2',
-      ultraLight: '#F4F0FF',
+    purple: {
+      dark: '#A931F7',
+      light: '#BF7BEB',
+      ultraLight: '#ECE5F1',
     },
     hover: {
-      purple: '#6F4BD8',
+      blue: '#6965C9',
       danger: '#D73754',
       grayMedium: '#7E7E86',
       grayLight: '#CECECE',
@@ -28,7 +28,7 @@ const theme = {
 
   effects: {
     gradients: {
-      purple: 'linear-gradient(139.44deg, #485BFF 0%, #FF59F8 96.19%)',
+      blueToPurple: 'linear-gradient(139.44deg, #667EEA 0%, #A931F7 96.19%)',
     },
     shadows: {
       default: '0 0.4rem 1.4rem rgba(0, 0, 0, 0.06)',

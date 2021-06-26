@@ -20,7 +20,7 @@ export const IconWrapper = styled.div`
 
     position: relative;
 
-    background-color: ${theme.colors.purple};
+    background-color: ${theme.colors.blue};
     transition: background-color 0.15s;
 
     svg {
@@ -34,7 +34,7 @@ export const Container = styled.button`
   ${({ theme }) => css`
     height: 4rem;
     border-radius: 0.8rem;
-    border: 1px solid ${theme.colors.purple};
+    border: 1px solid ${theme.colors.blue};
 
     display: flex;
     align-items: center;
@@ -44,10 +44,10 @@ export const Container = styled.button`
     transition: border-color 0.15s;
 
     :hover {
-      border-color: ${theme.colors.hover.purple};
+      border-color: ${theme.colors.hover.blue};
 
       ${IconWrapper} {
-        background-color: ${theme.colors.hover.purple};
+        background-color: ${theme.colors.hover.blue};
       }
     }
   `}

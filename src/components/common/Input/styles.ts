@@ -42,8 +42,8 @@ export const Container = styled.div<ContainerProps>`
       transition: border-color 0.15s, box-shadow 0.15s;
 
       :focus {
-        border-color: ${theme.colors.purple};
-        box-shadow: 0px 0px 0px 1px ${theme.colors.purple};
+        border-color: ${theme.colors.blue};
+        box-shadow: 0px 0px 0px 1px ${theme.colors.blue};
       }
 
       ::placeholder {
@@ -57,7 +57,7 @@ export const Container = styled.div<ContainerProps>`
         left: 0;
 
         font-weight: 500;
-        color: ${theme.colors.hover.purple};
+        color: ${theme.colors.hover.blue};
         transform: translateY(0%);
 
         opacity: 1;
