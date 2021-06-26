@@ -4,3 +4,5 @@
 /.next
 
 /*.js
+/public/workbox-*.js
+/public/sw.js
