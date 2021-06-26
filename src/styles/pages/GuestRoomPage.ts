@@ -24,34 +24,22 @@ export const NewQuestionForm = styled.form`
   `}
 `;
 
-export const FormFooter = styled.div`
-  ${({ theme }) => css`
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-top: 1.6rem;
+export const NewQuestionFormFooter = styled.div`
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 1.6rem;
 
-    > span {
-      font-size: 1.4rem;
-      color: ${theme.colors.gray.dark};
-      font-weight: 500;
+  button {
+    margin-left: auto;
+  }
 
-      button {
-        font-size: 1.4rem;
-        font-weight: 500;
-        border: none;
-        color: ${theme.colors.purple};
-        background-color: transparent;
-        cursor: pointer;
-
-        :hover {
-          text-decoration: underline;
-        }
-      }
+  @media (max-width: 768px) {
+    button {
+      margin-left: 1.6rem;
     }
-  `}
+  }
 `;
-
 export const QuestionList = styled.div`
   margin-top: 3.2rem;
 `;

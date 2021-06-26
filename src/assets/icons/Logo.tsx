@@ -4,7 +4,7 @@ type Props = SVGAttributes<SVGSVGElement>;
 
 const Logo: FC<Props> = (props) => (
   <svg
-    width="157"
+    width="108"
     height="75"
     viewBox="0 0 157 75"
     fill="none"

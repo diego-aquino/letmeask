@@ -2,8 +2,8 @@ import { useRouter } from 'next/router';
 import { ParsedUrlQuery } from 'querystring';
 import { FC, useCallback, useEffect } from 'react';
 
-import { RoomPageLayout } from '~/components/layouts';
-import { Question } from '~/components/rooms';
+import { PageWithLoading, RoomPageLayout } from '~/components/layouts';
+import { EmptyQuestions, Question } from '~/components/rooms';
 import { useAuth } from '~/contexts/AuthContext';
 import { useRoom, useQuestions } from '~/hooks';
 import {
@@ -13,6 +13,7 @@ import {
 } from '~/services/questions';
 import { closeRoom } from '~/services/rooms';
 import { QuestionList } from '~/styles/pages/GuestRoomPage';
+import { notify } from '~/utils';
 
 interface PageQuery extends ParsedUrlQuery {
   roomId: string;
@@ -22,12 +23,22 @@ const AdminRoomPage: FC = () => {
   const router = useRouter();
   const { roomId } = router.query as PageQuery;
 
-  const { user } = useAuth();
-  const { room } = useRoom(roomId);
-  const { questions } = useQuestions(roomId, user?.id ?? null);
+  const { user, isLoading: isLoadingUser } = useAuth();
+  const { room, isLoading: isLoadingRoom } = useRoom(roomId);
+  const { questions, isLoading: isLoadingQuestions } = useQuestions(
+    roomId,
+    user?.id ?? null,
+  );
 
   const handleCloseRoom = useCallback(async () => {
+    // eslint-disable-next-line no-alert
+    const closeWasConfirmed = window.confirm(
+      'Are you sure you want to close this room?',
+    );
+    if (!closeWasConfirmed) return;
+
     await closeRoom(roomId);
+    notify.success('Room is now closed');
     router.push('/');
   }, [roomId, router]);
 
@@ -49,7 +60,9 @@ const AdminRoomPage: FC = () => {
 
   const handleAnswerQuestion = useCallback(
     async (questionId: string, isAnswered: boolean) => {
-      await answerQuestion(roomId, questionId, isAnswered);
+      await answerQuestion(roomId, questionId, isAnswered, {
+        removeHighlight: true,
+      });
     },
     [roomId],
   );
@@ -61,39 +74,46 @@ const AdminRoomPage: FC = () => {
     [roomId],
   );
 
+  const userIsRoomOwner = user && user.id === room?.ownerId;
+  const isReady = !!(userIsRoomOwner && room?.isActive && !isLoadingQuestions);
+
+  console.log({ isLoadingRoom, room });
+
   useEffect(() => {
-    if (room && !room.isActive) {
+    if (isLoadingRoom || isLoadingUser) return;
+
+    if (!room?.isActive || !userIsRoomOwner) {
       router.replace('/');
     }
-  }, [room, router]);
-
-  if (!room?.isActive) {
-    return null;
-  }
+  }, [isLoadingRoom, isLoadingUser, room, router, userIsRoomOwner]);
 
   return (
-    <RoomPageLayout
-      roomName={room?.name ?? ''}
-      roomCode={roomId}
-      numberOfQuestions={questions.length}
-      onCloseRoom={handleCloseRoom}
-      admin
-    >
-      <QuestionList>
-        {questions.map((question) => (
-          <Question
-            key={question.id}
-            adminView
-            question={question}
-            initialIsAnswered={question.isAnswered}
-            initialIsHighlighted={question.isHighlighted}
-            onAnswerQuestion={handleAnswerQuestion}
-            onHighlightQuestion={handleHighlightQuestion}
-            onRemoveQuestion={handleRemoveQuestion}
-          />
-        ))}
-      </QuestionList>
-    </RoomPageLayout>
+    <PageWithLoading loading={!isReady}>
+      <RoomPageLayout
+        roomName={room?.name ?? ''}
+        roomCode={roomId}
+        numberOfQuestions={questions.length}
+        onCloseRoom={handleCloseRoom}
+        admin
+      >
+        <QuestionList>
+          {questions.map((question) => (
+            <Question
+              key={question.id}
+              adminView
+              question={question}
+              initialIsAnswered={question.isAnswered}
+              initialIsHighlighted={question.isHighlighted}
+              onAnswerQuestion={handleAnswerQuestion}
+              onHighlightQuestion={handleHighlightQuestion}
+              onRemoveQuestion={handleRemoveQuestion}
+            />
+          ))}
+        </QuestionList>
+
+        {questions.length === 0 && <EmptyQuestions adminView />}
+      </RoomPageLayout>
+    </PageWithLoading>
   );
 };
 

@@ -1,6 +1,11 @@
 import styled, { css } from 'styled-components';
 
-export const CopyIconWrapper = styled.div`
+import {
+  BareCheckIcon as BaseBareCheckIcon,
+  CopyIcon as BaseCopyIcon,
+} from '~/assets/icons';
+
+export const IconWrapper = styled.div`
   ${({ theme }) => css`
     height: 100%;
     margin-left: -1px;
@@ -10,6 +15,10 @@ export const CopyIconWrapper = styled.div`
     display: flex;
     justify-content: center;
     align-items: center;
+
+    color: ${theme.colors.white.details};
+
+    position: relative;
 
     background-color: ${theme.colors.purple};
     transition: background-color 0.15s;
@@ -37,9 +46,33 @@ export const Container = styled.button`
     :hover {
       border-color: ${theme.colors.hover.purple};
 
-      ${CopyIconWrapper} {
+      ${IconWrapper} {
         background-color: ${theme.colors.hover.purple};
       }
+    }
+  `}
+`;
+
+export const CopyIcon = styled(BaseCopyIcon)<{ $active: boolean }>`
+  ${({ $active: active }) => css`
+    transition: opacity 0.2s;
+    opacity: ${active ? 1 : 0};
+  `}
+`;
+
+export const BareCheckIcon = styled(BaseBareCheckIcon)<{ $active: boolean }>`
+  ${({ $active: active }) => css`
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+
+    transition: opacity 0.2s;
+    opacity: ${active ? 1 : 0};
+
+    && {
+      width: 1.8rem;
+      height: 1.8rem;
     }
   `}
 `;

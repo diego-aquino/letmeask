@@ -1,4 +1,4 @@
-import { FC, useReducer } from 'react';
+import { FC, useEffect, useReducer, useState } from 'react';
 
 import { LikeIcon } from '~/assets/icons';
 import { UserInfo } from '~/components/common';
@@ -22,12 +22,23 @@ const GuestViewQuestion: FC<Props> = ({
   initialHasLike = false,
   onToggleQuestionLike,
 }) => {
+  const [numberOfLikes, setNumberOfLikes] = useState(question.numberOfLikes);
+
+  useEffect(() => {
+    setNumberOfLikes(question.numberOfLikes);
+  }, [question.numberOfLikes]);
+
   const [hasLike, toggleHasLike] = useReducer(
     (likedState: boolean) => !likedState,
     initialHasLike,
   );
 
   const handleToggleQuestionLike = () => {
+    setNumberOfLikes((currentLikes) => {
+      const likeWasAdded = !hasLike;
+      return likeWasAdded ? currentLikes + 1 : currentLikes - 1;
+    });
+
     onToggleQuestionLike?.(question.id, !hasLike);
     toggleHasLike();
   };
@@ -52,8 +63,7 @@ const GuestViewQuestion: FC<Props> = ({
               highlighted={hasLike}
             >
               <LikesContainer>
-                <LikeIcon role="img" aria-label="Like icon" />{' '}
-                {question.numberOfLikes}
+                <LikeIcon role="img" aria-label="Like icon" /> {numberOfLikes}
               </LikesContainer>
             </ControlButton>
           )}

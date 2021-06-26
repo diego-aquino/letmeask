@@ -9,6 +9,7 @@ export interface Room {
 }
 
 export type RoomReference = firebase.firestore.DocumentReference<Room>;
+export type RoomSnapshot = firebase.firestore.DocumentSnapshot<Room>;
 
 export function getRoomDoc(roomId: string): RoomReference {
   return database.collection('rooms').doc(roomId) as RoomReference;
@@ -25,4 +26,9 @@ export async function createRoom(room: Room): Promise<RoomReference> {
 export async function closeRoom(roomId: string): Promise<void> {
   const roomDoc = getRoomDoc(roomId);
   return roomDoc.update({ isActive: false });
+}
+
+export async function getRoomSnapshot(roomId: string): Promise<RoomSnapshot> {
+  const roomSnapshot = getRoomDoc(roomId);
+  return roomSnapshot.get();
 }

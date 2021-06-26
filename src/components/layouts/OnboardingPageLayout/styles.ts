@@ -2,7 +2,7 @@ import styled, { css } from 'styled-components';
 
 export const Container = styled.div`
   ${({ theme }) => css`
-    height: 100vh;
+    min-height: 100vh;
     display: flex;
     align-items: stretch;
 
@@ -19,30 +19,61 @@ export const Container = styled.div`
       background-color: ${theme.colors.purple};
 
       svg {
-        max-width: 70%;
+        height: 36rem;
+        margin-right: auto;
       }
 
       h1 {
-        margin-top: 1.6rem;
-        font: 700 3.6rem 'Poppins', sans-serif;
+        margin-top: 2.4rem;
+        font: 700 3.2rem 'Poppins', sans-serif;
         line-height: 4.2rem;
       }
 
       p {
         margin-top: 1.6rem;
-        font-size: 2.4rem;
+        font-size: 2rem;
         line-height: 3.2rem;
         color: ${theme.colors.white.background};
       }
     }
 
     main {
-      padding: 0 3.2rem;
+      padding: 7.2rem 3.2rem;
       display: flex;
       align-items: center;
       justify-content: center;
 
       flex: 9;
+    }
+
+    @media (max-width: 768px) {
+      flex-direction: column;
+
+      aside {
+        padding: 7.2rem 2.4rem;
+        text-align: center;
+
+        svg {
+          width: 100%;
+        }
+
+        h1 {
+          margin-top: 2.4rem;
+          font: 700 3.2rem 'Poppins', sans-serif;
+          line-height: 4.2rem;
+        }
+
+        p {
+          margin-top: 1.6rem;
+          font-size: 2rem;
+          line-height: 3.2rem;
+          color: ${theme.colors.white.background};
+        }
+      }
+
+      main {
+        padding: 5.6rem 2.4rem 7.2rem;
+      }
     }
   `}
 `;
@@ -58,7 +89,8 @@ export const MainContent = styled.div`
   text-align: center;
 
   > svg {
-    margin-bottom: 4.8rem;
+    width: 15rem;
+    margin-bottom: 3.2rem;
     align-self: center;
   }
 `;

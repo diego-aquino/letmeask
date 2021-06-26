@@ -1,12 +1,14 @@
 import Head from 'next/head';
 import Link from 'next/link';
-import { FC, HTMLAttributes, useMemo } from 'react';
+import { useRouter } from 'next/router';
+import { FC, HTMLAttributes, useCallback, useMemo } from 'react';
 
-import { Logo } from '~/assets/icons';
+import { ExitIcon, Logo } from '~/assets/icons';
 import { Button } from '~/components/common';
 import { RoomCode } from '~/components/rooms';
+import { useAuth } from '~/contexts/AuthContext';
 
-import { Container, RoomHead } from './styles';
+import { Container, HeaderSeparator, RoomTitle } from './styles';
 
 interface Props extends HTMLAttributes<HTMLDivElement> {
   roomName: string;
@@ -25,11 +27,22 @@ const RoomPageLayout: FC<Props> = ({
   children,
   ...rest
 }) => {
+  const { signOut } = useAuth();
+
+  const router = useRouter();
+
   const questionsLeftLabel = useMemo(() => {
     if (numberOfQuestions === 0) return null;
     const shouldUsePlural = numberOfQuestions > 1;
     return `${numberOfQuestions} question${shouldUsePlural ? 's' : ''}`;
   }, [numberOfQuestions]);
+
+  const handleExitRoom = useCallback(() => router.push('/'), [router]);
+
+  const handleSignOut = useCallback(async () => {
+    await signOut();
+    router.push('/');
+  }, [router, signOut]);
 
   return (
     <Container {...rest}>
@@ -47,23 +60,43 @@ const RoomPageLayout: FC<Props> = ({
         <div>
           <RoomCode code={roomCode} />
 
-          {isAdmin && (
-            <Button
-              type="button"
-              variant="outline-danger"
-              onClick={onCloseRoom}
-            >
-              Encerrar sala
+          <div>
+            {isAdmin && (
+              <Button
+                type="button"
+                variant="outline-danger"
+                size="small"
+                onClick={onCloseRoom}
+              >
+                Close room
+              </Button>
+            )}
+            {!isAdmin && (
+              <Button
+                type="button"
+                variant="outline"
+                size="small"
+                icon={<ExitIcon />}
+                onClick={handleExitRoom}
+              >
+                Exit room
+              </Button>
+            )}
+
+            <HeaderSeparator />
+
+            <Button type="button" size="small" onClick={handleSignOut}>
+              Sign out
             </Button>
-          )}
+          </div>
         </div>
       </header>
 
       <main>
-        <RoomHead>
-          <h1>Sala {roomName}</h1>
+        <RoomTitle>
+          <h1>{roomName}</h1>
           {questionsLeftLabel && <span>{questionsLeftLabel}</span>}
-        </RoomHead>
+        </RoomTitle>
 
         {children}
       </main>

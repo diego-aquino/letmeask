@@ -1,23 +1,40 @@
-import { FC } from 'react';
+import { FC, useState } from 'react';
 
-import { CopyIcon } from '~/assets/icons';
+import { useMount } from '~/hooks';
 
-import { Container, CopyIconWrapper, Code } from './styles';
+import {
+  Container,
+  IconWrapper,
+  Code,
+  CopyIcon,
+  BareCheckIcon,
+} from './styles';
 
 interface Props {
   code: string;
 }
 
 const RoomCode: FC<Props> = ({ code }) => {
+  const [iconName, setIconName] = useState<'copy' | 'check'>('copy');
+  const isMounted = useMount();
+
   const copyRoomCodeToClipboard = () => {
     navigator.clipboard.writeText(code);
+
+    setIconName('check');
+
+    setTimeout(() => {
+      if (!isMounted.current) return;
+      setIconName('copy');
+    }, 1500);
   };
 
   return (
     <Container type="button" onClick={copyRoomCodeToClipboard}>
-      <CopyIconWrapper>
-        <CopyIcon />
-      </CopyIconWrapper>
+      <IconWrapper>
+        <CopyIcon $active={iconName === 'copy'} />
+        <BareCheckIcon $active={iconName === 'check'} />
+      </IconWrapper>
       <Code>Room #{code}</Code>
     </Container>
   );

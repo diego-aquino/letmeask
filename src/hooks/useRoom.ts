@@ -16,11 +16,15 @@ function useRoom(roomId: string): UseRoomReturn {
   useEffect(() => {
     const requestAndUpdateRoom = async () => {
       setIsLoading(true);
-      const roomSnapshot = await roomDoc.get();
-      if (!roomSnapshot.exists) return;
 
-      setRoom(roomSnapshot.data() as Room);
-      setIsLoading(false);
+      try {
+        const roomSnapshot = await roomDoc.get();
+        if (!roomSnapshot.exists) return;
+
+        setRoom(roomSnapshot.data() as Room);
+      } finally {
+        setIsLoading(false);
+      }
     };
 
     requestAndUpdateRoom();

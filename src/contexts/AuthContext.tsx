@@ -20,6 +20,7 @@ interface AuthContextValue {
   user: User | null;
   isLoading: boolean;
   signInWithGoogle: () => Promise<User>;
+  signOut: () => Promise<void>;
 }
 
 const AuthContext = createContext({} as AuthContextValue);
@@ -51,6 +52,13 @@ const AuthContextProvider: FC = ({ children }) => {
     return signedInUser;
   }, []);
 
+  const signOut = useCallback(async () => {
+    setIsLoading(true);
+    await auth.signOut();
+    setIsLoading(false);
+    setUser(null);
+  }, []);
+
   useEffect(() => {
     const unsubscribe = auth.onAuthStateChanged((currentUser) => {
       if (!currentUser) {
@@ -71,7 +79,9 @@ const AuthContextProvider: FC = ({ children }) => {
   }, []);
 
   return (
-    <AuthContext.Provider value={{ user, isLoading, signInWithGoogle }}>
+    <AuthContext.Provider
+      value={{ user, isLoading, signInWithGoogle, signOut }}
+    >
       {children}
     </AuthContext.Provider>
   );

@@ -1,7 +1,8 @@
-import { FC, useReducer } from 'react';
+import { FC } from 'react';
 
 import { AnswerIcon, CheckIcon, DeleteIcon, LikeIcon } from '~/assets/icons';
 import { UserInfo } from '~/components/common';
+import { useToggle } from '~/hooks';
 import { Question } from '~/services/questions';
 
 import {
@@ -29,27 +30,22 @@ const AdminViewQuestion: FC<Props> = ({
   onHighlightQuestion,
   onRemoveQuestion,
 }) => {
-  const [isAnswered, toggleIsAnswered] = useReducer(
-    (answeredState: boolean) => !answeredState,
-    initialIsAnswered,
-  );
-  const [isHighlighted, toggleIsHighlighted] = useReducer(
-    (highlightedState: boolean) => !highlightedState,
-    initialIsHighlighted,
-  );
+  const [isAnswered, toggleIsAnswered] = useToggle(initialIsAnswered);
+  const [isHighlighted, toggleIsHighlighted] = useToggle(initialIsHighlighted);
 
   const handleRemoveQuestion = () => {
     onRemoveQuestion?.(question.id);
   };
 
-  const handleAnswerQuestion = () => {
-    onAnswerQuestion?.(question.id, !isAnswered);
-    toggleIsAnswered();
-  };
-
   const handleHighlightQuestion = () => {
     onHighlightQuestion?.(question.id, !isAnswered);
     toggleIsHighlighted();
+  };
+
+  const handleAnswerQuestion = () => {
+    onAnswerQuestion?.(question.id, !isAnswered);
+    toggleIsAnswered();
+    toggleIsHighlighted(false);
   };
 
   return (
@@ -82,6 +78,7 @@ const AdminViewQuestion: FC<Props> = ({
             aria-label="Highlight question"
             highlighted={isHighlighted}
             onClick={handleHighlightQuestion}
+            disabled={isAnswered}
           >
             <AnswerIcon role="img" aria-label="Comment icon" />
           </ControlButton>
