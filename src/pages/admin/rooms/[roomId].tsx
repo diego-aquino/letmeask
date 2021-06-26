@@ -24,9 +24,9 @@ const AdminRoomPage: FC = () => {
   const { roomId } = router.query as PageQuery;
 
   const { user, isLoading: isLoadingUser } = useAuth();
-  const { room, isLoading: isLoadingRoom } = useRoom(roomId);
+  const { room, isLoading: isLoadingRoom } = useRoom(roomId ?? null);
   const { questions, isLoading: isLoadingQuestions } = useQuestions(
-    roomId,
+    roomId ?? null,
     user?.id ?? null,
   );
 
@@ -74,10 +74,8 @@ const AdminRoomPage: FC = () => {
     [roomId],
   );
 
-  const userIsRoomOwner = user && user.id === room?.ownerId;
+  const userIsRoomOwner = !!(user && user.id === room?.ownerId);
   const isReady = !!(userIsRoomOwner && room?.isActive && !isLoadingQuestions);
-
-  console.log({ isLoadingRoom, room });
 
   useEffect(() => {
     if (isLoadingRoom || isLoadingUser) return;
